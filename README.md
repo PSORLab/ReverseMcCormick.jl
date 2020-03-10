@@ -1,4 +1,4 @@
-# ReverseMcCormick.jl#
+# ReverseMcCormick.jl
 A Reverse McCormick Operator Library
 
 | **Linux/OS**                                                                     | **Windows**                                             |                       
