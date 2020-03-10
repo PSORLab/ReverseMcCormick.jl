@@ -1,5 +1,8 @@
 #!/usr/bin/env julia
 
+using Test
+@test true
+
 #=
 using Test, ReverseMcCormick, McCormick
 
