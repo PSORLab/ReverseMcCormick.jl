@@ -1,9 +1,7 @@
 #!/usr/bin/env julia
 
 using Test
-@test true
 
-#=
 using Test, ReverseMcCormick, McCormick
 
 # Create functions for comparing MC object to reference object and detail failures
@@ -29,6 +27,5 @@ function check_vs_ref2(f::Function, x::MC, c::Float64, yref1::MC, yref2::MC, mct
     pass_flag = check_vs_ref_kernel(f(x, c), yref1, mctol)
     check_vs_ref_kernel(f(c, x), yref2, mctol) && pass_flag
 end
-=#
 
-#include("reverse_mccormick.jl")
+include("reverse_mccormick.jl")
