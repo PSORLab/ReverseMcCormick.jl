@@ -11,9 +11,7 @@ McCormick = "53c679d3-6890-5091-8386-c291e8c8aaa1"
 
 [compat]
 DocStringExtensions = "~0.8"
-IntervalContractors = "0.4.2"
-McCormick = "~0.1"
-IntervalContractors = "~0.4"
+IntervalContractors = "~0.4.2"
 McCormick = "~0.2"
 julia = "~1.1, ~1.2, ~1.3"
 
