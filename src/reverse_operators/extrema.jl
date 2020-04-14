@@ -5,13 +5,23 @@ $(FUNCTIONNAME)
 
 Reverse McCormick operator for `max`.
 """
-max_rev(a::MC, b::MC, c::MC) = (a,b,c)
-#max_rev(a,b,c) = max_rev(promote(a,b,c)...)
+function max_rev(a::MC{N,T}, b::MC{N,T}, c::MC{N,T}) where {N, T<:RelaxTag}
+    aIntv, bIntv, cIntv = IntervalContractors.max_rev(a.intv, b.Intv, c.Intv)
+    A = a ∩ MC{N,T}(aIntv)
+    B = b ∩ MC{N,T}(bIntv)
+    C = c ∩ MC{N,T}(cIntv)
+    A,B,C
+end
 
 """
 $(FUNCTIONNAME)
 
 Reverse McCormick operator for `min`.
 """
-min_rev(a::MC, b::MC, c::MC) = (a,b,c)
-#min_rev(a,b,c) = min_rev(promote(a,b,c)...)
+function min_rev(a::MC{N,T}, b::MC{N,T}, c::MC{N,T}) where {N, T<:RelaxTag}
+    aIntv, bIntv, cIntv = IntervalContractors.min_rev(a.intv, b.Intv, c.Intv)
+    A = a ∩ MC{N,T}(aIntv)
+    B = b ∩ MC{N,T}(bIntv)
+    C = c ∩ MC{N,T}(cIntv)
+    A,B,C
+end

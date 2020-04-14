@@ -35,7 +35,6 @@ $(FUNCTIONNAME)
 Creates reverse McCormick contractor for `a` = `b`*`c`
 """
 function mul_rev(a::MC, b::MC, c::MC)  # a = b * c
-    #=
     bflag = (0.0 ∉ b.Intv)
     if bflag
         temp1 = a / b
@@ -46,7 +45,6 @@ function mul_rev(a::MC, b::MC, c::MC)  # a = b * c
         temp2 = a / c
         ((0.0 ∉ a.Intv) || cflag) && (b = b ∩ temp2)
     end
-    =#
     a,b,c
 end
 mul_rev(a::MC{N,T},b::MC{N,T},c::Float64) where {N, T<:RelaxTag} = mul_rev(a,b,MC{N,T}(c))
@@ -58,12 +56,10 @@ $(FUNCTIONNAME)
 Creates reverse McCormick contractor for `a` = `b`/`c`
 """
 function div_rev(a::MC, b::MC, c::MC)  # a = b / c
-    #=
     b = b ∩ (a * c)
     if (~isempty(b) && ~in(0.0, a.Intv))
         c = c ∩ (b / a)
     end
-    =#
     a,b,c
 end
 div_rev(a,b,c) = div_rev(promote(a,b,c)...)
@@ -85,7 +81,6 @@ $(FUNCTIONNAME)
 Creates reverse McCormick contractor for `a` = `b`^`c`
 """
 function power_rev(a::MC, b::MC, c::MC)  # a = b^c
-    #=
     if (~isempty(b) && ~isempty(c))
         ~in(0.0, c.Intv) && (b = b ∩ (a^(inv(c))))
         if ~in(0.0, a.Intv)
@@ -99,7 +94,6 @@ function power_rev(a::MC, b::MC, c::MC)  # a = b^c
     else
         a = empty(a)
     end
-    =#
     a,b,c
 end
 power_rev(a,b,c) = power_rev(promote(a,b,c)...)
@@ -111,7 +105,8 @@ $(FUNCTIONNAME)
 Creates reverse McCormick contractor for `a` = `sqrt(b)`
 """
 function sqrt_rev(a::MC, b::MC)  # a = sqrt(b)
-    #b = b ∩ (a^2)
+    A, B = sqrt_rev(a,b)
+    b = B ∩ (a^2)
     a,b
 end
 sqr_rev(f, x)  = power_rev(f,x,2)
@@ -122,24 +117,9 @@ $(FUNCTIONNAME)
 
 Creates reverse McCormick contractor for `a` = `abs(b)`
 """
-abs_rev(a::MC, b::MC) = (a,b)
-#=
-function abs_rev!(y::MC{N,T}, x::MC{N,T}) where {N, T<:RelaxTag}   # y = abs(x); refine x
-
-    y_new = y ∩ (0..∞)
-
-    x1 = y_new ∩ x
-    x2 = -(y_new ∩ (-x))
-
-    cv =
-    cc =
-    cv_grad =
-    cc_grad =
-    Intv = hull(Intv(x1),Intv(x2))
-
-
-    y = MC{N,T}(cv, cc, Intv, cv_grad, cc_grad, y.cnst)
-
-    return
+function abs_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    AIntv, BIntv = abs_rev(a, b)
+    A = a ∩ MC{N,T}(aIntv)
+    B = b ∩ MC{N,T}(bIntv)
+    A,B
 end
-=#
