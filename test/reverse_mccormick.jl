@@ -64,6 +64,18 @@ end
     @test bout1.Intv.hi == -1.0
     @test cout1.Intv.lo == 1.4
     @test cout1.Intv.hi == 4.5
+
+    # THE ADDITION OPERATOR
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
+    b = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
+    c = 3.0
+
+    aout1, bout1, cout1 = plus_rev(a,b,c)
+
+    @test isapprox(bout1.Intv.lo, -2.6)
+    @test bout1.Intv.hi == -1.0
+    @test cout1.Intv.lo == 3.0
+    @test cout1.Intv.hi == 3.0
 end
 
 
