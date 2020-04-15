@@ -19,10 +19,10 @@ end
 
     aout1, bout1, cout1 = mul_rev(a,b,c)
 
-    #@test bout1.Intv.lo == -10.0
-    #@test bout1.Intv.hi == -1.0
-    #@test cout1.Intv.lo == 1.1
-    #@test cout1.Intv.hi == 4.5
+    @test bout1.Intv.lo == Inf
+    @test bout1.Intv.hi == -Inf
+    @test cout1.Intv.lo == Inf
+    @test cout1.Intv.hi == -Inf
 
     bout1 = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
     cout1 = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
@@ -44,19 +44,28 @@ end
     MC_1_is_equal(bout2_a, bout2, 0.00001)
     @test cout2_a.Intv.lo == -10.0
     @test cout2_a.Intv.hi == -1.0
-#    @test cout2_a.cv == -6.32
+    @test cout2_a.cv == -6.32
     @test cout2_a.cc == -1.0
-    #@test cout2_a.cv_grad[1] == -8.38
+    @test cout2_a.cv_grad[1] == -8.38
     @test cout2_a.cc_grad[1] == 0.0
 
-    # WITH FLOAT
-
 end
 
-#=
+
 @testset "Reverse Addition" begin
+    # THE ADDITION OPERATOR
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
+    b = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
+    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+
+    aout1, bout1, cout1 = plus_rev(a,b,c)
+
+    @test isapprox(bout1.Intv.lo, -4.1000000000000005)
+    @test bout1.Intv.hi == -1.0
+    @test cout1.Intv.lo == 1.4
+    @test cout1.Intv.hi == 4.5
 end
-=#
+
 
 #=
 @testset "Reverse Division" begin
@@ -251,5 +260,4 @@ end
    @test isapprox(x3.Intv.hi, 0.4000000000000001, atol=1E-7)
    @test isapprox(x3.cv_grad[1], 0.0, atol=1E-7)
    @test isapprox(x3.cc_grad[1], 0.0, atol=1E-7)
-
 end
