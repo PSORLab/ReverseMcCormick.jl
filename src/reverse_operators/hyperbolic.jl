@@ -5,7 +5,7 @@ Reverse McCormick operator for `sinh`.
 """
 function sinh_rev(y::MC, x::MC)
     x = x ∩ asinh(y)
-    y,x
+    y, x
 end
 
 """
@@ -18,7 +18,7 @@ function cosh_rev(y::MC, x::MC)
     if ~isempty(y)
         x = x ∩ acosh(y)
     end
-    y,x
+    y, x
 end
 
 """
@@ -31,5 +31,5 @@ function tanh_rev(y::MC, x::MC)
     if ~isempty(y)
         x = x ∩ atanh(y)
     end
-    y,x
+    y, x
 end
