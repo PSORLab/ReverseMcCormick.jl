@@ -20,8 +20,8 @@ function plus_rev(a::MC, b::MC, c::MC)
     a, b, c
 end
 function plus_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    bold = b
     if c ∈ a - bold
-        bold = b
         b = b ∩ (a - c)
         return a, b, c
     end
