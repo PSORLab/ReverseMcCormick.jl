@@ -37,7 +37,9 @@ end
 # trivial definitions
 for f in (:sech_rev, :csch_rev, :coth_rev)
     @eval function ($f)(y::MC, x::MC)
-        isempty(y) && x = empty(x)
+        if isempty(y)
+            x = empty(x)
+        end
         y, x
     end
 end
