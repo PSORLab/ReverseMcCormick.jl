@@ -275,12 +275,12 @@ end
         for f in (exp_rev, exp2_rev, exp10_rev, expm1_rev, log_rev, log2_rev,
                   log10_rev, log1p_rev, sin_rev, cos_rev, tan_rev, asin_rev,
                   acos_rev, atan_rev, sinh_rev, cosh_rev, tanh_rev, asinh_rev,
-                  acosh_rev, atanh_rev, abs_rev, sqrt_rev)
+                  acosh_rev, atanh_rev, abs_rev, sqrt_rev, minus_rev, plus_rev,
+                  zero_rev, real_rev, one_rev)
             bout, aout = f(b, a)
-            ~isempty(aout) && (println("f = $(f)"))
             @test isempty(aout)
         end
-        for f in (*, /, +, -)
+        for f in (plus_rev, minus_rev, mul_rev, div_rev)
             bout, cout, aout = f(b, c, a)
             ~isempty(aout) && (println("f = $(f)"))
             ~isempty(cout) && (println("f = $(f)"))
