@@ -10,7 +10,7 @@ function max_rev(a::MC{N,T}, b::MC{N,T}, c::MC{N,T}) where {N, T<:RelaxTag}
     A = a ∩ MC{N,T}(aIntv)
     B = b ∩ MC{N,T}(bIntv)
     C = c ∩ MC{N,T}(cIntv)
-    A,B,C
+    A, B, C
 end
 
 """
@@ -23,5 +23,5 @@ function min_rev(a::MC{N,T}, b::MC{N,T}, c::MC{N,T}) where {N, T<:RelaxTag}
     A = a ∩ MC{N,T}(aIntv)
     B = b ∩ MC{N,T}(bIntv)
     C = c ∩ MC{N,T}(cIntv)
-    A,B,C
+    A, B, C
 end

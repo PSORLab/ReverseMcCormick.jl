@@ -48,9 +48,7 @@ end
     @test cout2_a.cc == -1.0
     @test cout2_a.cv_grad[1] == -8.38
     @test cout2_a.cc_grad[1] == 0.0
-
 end
-
 
 @testset "Reverse Addition" begin
     # THE ADDITION OPERATOR
@@ -72,22 +70,15 @@ end
 
     aout1, bout1, cout1 = plus_rev(a,b,c)
 
-    @test isapprox(bout1.Intv.lo, -2.6)
-    @test bout1.Intv.hi == -1.0
-    @test cout1.Intv.lo == 3.0
-    @test cout1.Intv.hi == 3.0
+    @test bout1.cv == -2.0
+    @test cout1 == 3.0
 end
 
-
-#=
 @testset "Reverse Division" begin
 end
-=#
 
-#=
 @testset "Reverse Subtraction" begin
 end
-=#
 
 @testset "Reverse Exponential" begin
     a = MC{1,NS}(1.0,Interval{Float64}(0.4,3.0),1)
@@ -272,4 +263,30 @@ end
    @test isapprox(x3.Intv.hi, 0.4000000000000001, atol=1E-7)
    @test isapprox(x3.cv_grad[1], 0.0, atol=1E-7)
    @test isapprox(x3.cc_grad[1], 0.0, atol=1E-7)
+end
+
+
+# reverse of an empty is an empty (should override NaN)
+@testset "Empty Propagation" begin
+    for T in (NS, MV, Diff)
+        a = MC{1,T}(3.1, Interval{Float64}(2.5, 6.0), 1)
+        c = a + 2.0
+        b = empty(a)
+        for f in (exp_rev, exp2_rev, exp10_rev, expm1_rev, log_rev, log2_rev,
+                  log10_rev, log1p_rev, sin_rev, cos_rev, tan_rev, asin_rev,
+                  acos_rev, atan_rev, sinh_rev, cosh_rev, tanh_rev, asinh_rev,
+                  acosh_rev, atanh_rev, abs_rev, sqrt_rev, minus_rev, plus_rev,
+                  zero_rev, real_rev, one_rev)
+            bout, aout = f(b, a)
+            @test isempty(aout)
+        end
+        for f in (plus_rev, minus_rev, mul_rev, div_rev)
+            bout, cout, aout = f(b, c, a)
+            ~isempty(aout) && (println("f = $(f)"))
+            ~isempty(cout) && (println("f = $(f)"))
+            @test isempty(aout)
+            @test isempty(cout)
+        end
+        # special cases, ^, max, min
+    end
 end
