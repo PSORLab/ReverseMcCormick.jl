@@ -33,3 +33,12 @@ function tan_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     b = b ∩ MC{N,T}(bintv)
     a, b
 end
+
+
+# trivial definitions
+for f in (:sec_rev, :csc_rev, :cot_rev, :secd_rev, :cscd_rev, :cotd_rev)
+    @eval function ($f)(y::MC, x::MC)
+        isempty(y) && x = empty(x)
+        y, x
+    end
+end

@@ -11,6 +11,30 @@ end
 """
 $(FUNCTIONNAME)
 
+Creates reverse McCormick contractor for `a` = `one(b)`
+"""
+function one_rev(a::MC, b::MC)
+    if (1.0 ∉ a)
+        b = empty(b)
+    end
+    a, b
+end
+
+"""
+$(FUNCTIONNAME)
+
+Creates reverse McCormick contractor for `a` = `zero(b)`
+"""
+function zero_rev(a::MC, b::MC)
+    if (0.0 ∉ a)
+        b = empty(b)
+    end
+    a, b
+end
+
+"""
+$(FUNCTIONNAME)
+
 Creates reverse McCormick contractor for `a` = `b` +`c`
 """
 function plus_rev(a::MC, b::MC, c::MC)

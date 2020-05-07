@@ -265,7 +265,7 @@ end
    @test isapprox(x3.cc_grad[1], 0.0, atol=1E-7)
 end
 
-#=
+
 # reverse of an empty is an empty (should override NaN)
 @testset "Empty Propagation" begin
     for T in (NS, MV, Diff)
@@ -287,7 +287,3 @@ end
         # special cases, ^, max, min
     end
 end
-
-@testset "NaN Propagation" begin
-end
-=#

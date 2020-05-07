@@ -33,3 +33,11 @@ function tanh_rev(y::MC, x::MC)
     end
     y, x
 end
+
+# trivial definitions
+for f in (:sech_rev, :csch_rev, :coth_rev)
+    @eval function ($f)(y::MC, x::MC)
+        isempty(y) && x = empty(x)
+        y, x
+    end
+end

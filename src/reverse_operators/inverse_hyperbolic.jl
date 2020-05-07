@@ -30,3 +30,11 @@ function atanh_rev(y::MC, x::MC)
     x = x ∩ tanh(y)
     y,x
 end
+
+# trivial definitions
+for f in (:asech_rev, :acsch_rev, :acoth_rev)
+    @eval function ($f)(y::MC, x::MC)
+        isempty(y) && x = empty(x)
+        y, x
+    end
+end

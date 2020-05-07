@@ -1,9 +1,11 @@
+half_pi(::T) = Interval{T}(pi)/2
+
 """
 $(FUNCTIONNAME)
 
 Reverse McCormick operator for `asin`.
 """
-function asin_rev(y::MC, x::MC)  # y = asin(x)
+function asin_rev(y::MC, x::MC)
     h = lo(half_pi(Float64))
     y = y ∩ Interval{Float64}(-h, h)
     if ~isempty(y)
@@ -36,4 +38,12 @@ function atan_rev(y::MC, x::MC)
         x = x ∩ tan(y)
     end
     y,x
+end
+
+# trivial definitions
+for f in (:asec_rev, :acsc_rev, :acot_rev, :asecd, :acscd, :acotd)
+    @eval function ($f)(y::MC, x::MC)
+        isempty(y) && x = empty(x)
+        y, x
+    end
 end
