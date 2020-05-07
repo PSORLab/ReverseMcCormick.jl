@@ -7,7 +7,7 @@ Reverse McCormick operator for `asin`.
 """
 function asin_rev(y::MC, x::MC)
     if isempty(y)
-        return y, empty(x)
+        return y, y
     else
         y = y ∩ Interval{Float64}(-HALF_PI.lo, HALF_PI.hi)
         x = sin(y)
@@ -22,7 +22,7 @@ Reverse McCormick operator for `acos`.
 """
 function acos_rev(y::MC, x::MC)
     if isempty(y)
-        return y, empty(x)
+        return y, y
     else
         y = y ∩ Interval{Float64}(0.0, HALF_PI.hi)
         x = x ∩ cos(y)
@@ -37,7 +37,7 @@ Reverse McCormick operator for `atan`.
 """
 function atan_rev(y::MC, x::MC)
     if isempty(y)
-        return y, empty(x)
+        return y, y
     else
         y = y ∩ Interval{Float64}(-HALF_PI.lo, HALF_PI.hi)
         x = x ∩ tan(y)
@@ -49,7 +49,7 @@ end
 for f in (:asec_rev, :acsc_rev, :acot_rev, :asecd, :acscd, :acotd)
     @eval function ($f)(y::MC, x::MC)
         if isempty(y)
-            return y, empty(x)
+            return y, y
         end
         y, x
     end

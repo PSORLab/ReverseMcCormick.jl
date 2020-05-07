@@ -14,7 +14,7 @@ $(FUNCTIONNAME)
 Creates reverse McCormick contractor for `a` = `one(b)`
 """
 function one_rev(a::MC, b::MC)
-    if (1.0 ∉ a)
+    if 1.0 ∉ a
         b = empty(b)
     end
     a, b
@@ -26,7 +26,7 @@ $(FUNCTIONNAME)
 Creates reverse McCormick contractor for `a` = `zero(b)`
 """
 function zero_rev(a::MC, b::MC)
-    if (0.0 ∉ a)
+    if 0.0 ∉ a
         b = empty(b)
     end
     a, b
@@ -129,7 +129,7 @@ $(FUNCTIONNAME)
 Creates reverse McCormick contractor for `a` = `inv(b)`
 """
 function inv_rev(a::MC, b::MC)
-    ~in(0.0, a) && (b = b ∩ inv(a))
+    0.0 ∉ a && (b = b ∩ inv(a))
     a, b
 end
 inv_rev(a,b) = inv_rev(promote(a,b)...)
@@ -170,7 +170,7 @@ function sqrt_rev(y::MC, x::MC)
     y = Y ∩ x^2
     y, x
 end
-sqr_rev(f, x)  = power_rev(f,x,2)
+sqr_rev(f, x)  = power_rev(f, x, 2)
 
 
 function abs_rev(y::MC, x::MC)

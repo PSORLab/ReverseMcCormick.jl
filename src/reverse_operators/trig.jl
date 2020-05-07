@@ -9,7 +9,7 @@ function sin_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
         a = a ∩ MC{N,T}(aintv)
         b = b ∩ MC{N,T}(bintv)
     else
-        b = isempty(b)
+        return a, a
     end
     a, b
 end
@@ -25,7 +25,7 @@ function cos_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
         a = a ∩ MC{N,T}(aintv)
         b = b ∩ MC{N,T}(bintv)
     else
-        b = isempty(b)
+        return a, a
     end
     a, b
 end
@@ -41,7 +41,7 @@ function tan_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
         a = a ∩ MC{N,T}(aintv)
         b = b ∩ MC{N,T}(bintv)
     else
-        b = isempty(b)
+        return a, a
     end
     a, b
 end
@@ -51,7 +51,7 @@ end
 for f in (:sec_rev, :csc_rev, :cot_rev, :secd_rev, :cscd_rev, :cotd_rev)
     @eval function ($f)(y::MC, x::MC)
         if isempty(y)
-            x = empty(x)
+            return y, y
         end
         y, x
     end
