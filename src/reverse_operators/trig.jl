@@ -4,9 +4,13 @@ $(FUNCTIONNAME)
 Reverse McCormick operator for `sin`.
 """
 function sin_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
-    aintv, bintv = sin_rev(a.Intv, b.Intv)
-    a = a ∩ MC{N,T}(aintv)
-    b = b ∩ MC{N,T}(bintv)
+    if !isempty(a)
+        aintv, bintv = sin_rev(a.Intv, b.Intv)
+        a = a ∩ MC{N,T}(aintv)
+        b = b ∩ MC{N,T}(bintv)
+    else
+        b = isempty(b)
+    end
     a, b
 end
 
@@ -16,9 +20,13 @@ $(FUNCTIONNAME)
 Reverse McCormick operator for `cos`.
 """
 function cos_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
-    aintv, bintv = cos_rev(a.Intv, b.Intv)
-    a = a ∩ MC{N,T}(aintv)
-    b = b ∩ MC{N,T}(bintv)
+    if !isempty(a)
+        aintv, bintv = cos_rev(a.Intv, b.Intv)
+        a = a ∩ MC{N,T}(aintv)
+        b = b ∩ MC{N,T}(bintv)
+    else
+        b = isempty(b)
+    end
     a, b
 end
 
@@ -28,9 +36,13 @@ $(FUNCTIONNAME)
 Reverse McCormick operator for `tan`.
 """
 function tan_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
-    aintv, bintv = tan_rev(a.Intv, b.Intv)
-    a = a ∩ MC{N,T}(aintv)
-    b = b ∩ MC{N,T}(bintv)
+    if !isempty(a)
+        aintv, bintv = tan_rev(a.Intv, b.Intv)
+        a = a ∩ MC{N,T}(aintv)
+        b = b ∩ MC{N,T}(bintv)
+    else
+        b = isempty(b)
+    end
     a, b
 end
 

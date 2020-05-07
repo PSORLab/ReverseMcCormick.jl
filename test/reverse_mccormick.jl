@@ -277,6 +277,7 @@ end
                   acos_rev, atan_rev, sinh_rev, cosh_rev, tanh_rev, asinh_rev,
                   acosh_rev, atanh_rev, abs_rev, sqrt_rev)
             bout, aout = f(b, a)
+            isempty(aout) && (println("f = $(f)"))
             @test isempty(aout)
         end
         for f in (*, /, +, -)

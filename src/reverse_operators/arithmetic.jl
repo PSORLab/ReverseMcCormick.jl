@@ -72,9 +72,6 @@ function minus_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:Numbe
     b = b ∩ (a + c)
     a, b, c
 end
-function minus_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
-    # TODO
-end
 
 
 """
@@ -82,7 +79,7 @@ $(FUNCTIONNAME)
 
 Creates reverse McCormick contractor for `a` = `-b``
 """
-function minus_rev(a::MC, b::MC)  # a = -b
+function minus_rev(a::MC, b::MC)
     b = b ∩ -a
     return a, b
 end
@@ -165,22 +162,20 @@ $(FUNCTIONNAME)
 
 Creates reverse McCormick contractor for `a` = `sqrt(b)`
 """
-function sqrt_rev(a::MC, b::MC)
-    A, B = sqrt_rev(a,b)
-    b = B ∩ (a^2)
-    a, b
+function sqrt_rev(y::MC, x::MC)
+    if isempty(y)
+        return y, empty(x)
+    end
+    Y, X = sqrt_rev(y.Intv, x.Intv)
+    y = Y ∩ x^2
+    y, x
 end
 sqr_rev(f, x)  = power_rev(f,x,2)
 
 
-"""
-$(FUNCTIONNAME)
-
-Creates reverse McCormick contractor for `a` = `abs(b)`
-"""
-function abs_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
-    A, B = abs_rev(a, b)
-    a = a ∩ MC{N,T}(A)
-    b = b ∩ MC{N,T}(B)
-    A, B
+function abs_rev(y::MC, x::MC)
+    if isempty(y)
+        return y, empty(x)
+    end
+    y, x
 end

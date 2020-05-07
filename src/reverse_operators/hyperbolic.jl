@@ -4,7 +4,11 @@ $(FUNCTIONNAME)
 Reverse McCormick operator for `sinh`.
 """
 function sinh_rev(y::MC, x::MC)
-    x = x ∩ asinh(y)
+    if isempty(y)
+        return y, empty(x)
+    else
+        x = x ∩ asinh(y)
+    end
     y, x
 end
 
@@ -14,8 +18,10 @@ $(FUNCTIONNAME)
 Reverse McCormick operator for `cosh`.
 """
 function cosh_rev(y::MC, x::MC)
-    y = y ∩ Interval{Float64}(1.0, Inf)
-    if ~isempty(y)
+    if isempty(y)
+        return y, empty(x)
+    else
+        y = y ∩ Interval{Float64}(1.0, Inf)
         x = x ∩ acosh(y)
     end
     y, x
@@ -27,8 +33,10 @@ $(FUNCTIONNAME)
 Reverse McCormick operator for `tanh`.
 """
 function tanh_rev(y::MC, x::MC)
-    y = y ∩ Interval{Float64}(-1.0, 1.0)
-    if ~isempty(y)
+    if isempty(y)
+        return y, empty(x)
+    else
+        y = y ∩ Interval{Float64}(-1.0, 1.0)
         x = x ∩ atanh(y)
     end
     y, x
