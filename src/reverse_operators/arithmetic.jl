@@ -280,21 +280,67 @@ end
 """
 $(FUNCTIONNAME)
 
-Creates reverse McCormick contractor for `a` = `sqrt(b)`
+Creates reverse McCormick contractor for `a` = `sqrt(b)`. That is
+`b = b ∩ a^2`
 """
-function sqrt_rev(y::MC, x::MC)
-    if isempty(y)
-        return y, y
+function sqrt_rev(a::MC, b::MC)
+    if isempty(a)
+        return a, a
     end
-    y = y ∩ x^2
-    y, x
+    b = b ∩ a^2
+    a, b
 end
 sqr_rev(f, x)  = power_rev(f, x, 2)
 
 
+"""
+$(FUNCTIONNAME)
+
+Creates reverse McCormick contractor for `a` = `abs(b)`
+"""
 function abs_rev(y::MC, x::MC)
     if isempty(y)
         return y, empty(x)
     end
     y, x
+end
+
+"""
+$(FUNCTIONNAME)
+
+Creates reverse McCormick contractor for `a` = `step(b)`
+"""
+function step_rev(a::MC, b::MC)
+    a_lo = a.Intv.lo
+    a_hi = a.Intv.hi
+    if isempty(a) || 0.0 > a_hi || 1.0 < a_lo ||
+        (0.0 < a_lo && a_hi < 1.0)
+        b = empty(b)
+        return a, b
+    elseif 0.0 ∈ a && 1.0 ∉ a
+        b = b ∩ Interval(-Inf, 0.0)
+    elseif -1.0 ∉ a && 1.0 ∈ a
+        b = b ∩ Interval(0.0, Inf)
+    end
+    a, b
+end
+
+"""
+$(FUNCTIONNAME)
+
+Creates reverse McCormick contractor for `a` = `sign(b)`.
+"""
+function sign_rev(a::MC, b::MC)
+    a_lo = a.Intv.lo
+    a_hi = a.Intv.hi
+    if isempty(a) || -1.0 > a_hi || 1.0 < a_lo ||
+        (-1.0 < a_lo && a_hi < 1.0)
+        b = empty(b)
+        return a, b
+    elseif -1.0 ∈ a && 1.0 ∉ a
+        b = b ∩ Interval(-Inf, 0.0)
+    elseif -1.0 ∉ a && 1.0 ∈ a
+        b = b ∩ Interval(0.0, Inf)
+    end
+    a, b
 end

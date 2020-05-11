@@ -68,16 +68,52 @@ end
     b = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
     c = 3.0
 
-    aout1, bout1, cout1 = plus_rev(a,b,c)
+    aout1, bout1, cout1 = plus_rev(a, b, c)
 
     @test bout1.cv == -2.0
     @test cout1 == 3.0
+
+    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+    aout1, bout1 = plus_rev(a, c)                    # should be NaN
+    @test isnan(bout1.cv)
+    @test isnan(bout1.cc)
+
+    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+    b = MC{1,NS}(Interval{Float64}(-10.0, 10.0))
+    aout1, bout1 = plus_rev(c, b)
+    @test bout1.cv == 2.0
+    @test bout1.cc == 2.0
 end
 
 @testset "Reverse Division" begin
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
+    b = Interval(0.5, 12.0)
+    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+
+    #aout1, bout1, cout1 = div_rev(a, b, c)
+    #@test bout1.cv == 1.0
+    #@test bout1.cc == 1.0
+    #@test cout1.cv == 1.0
+    #@test cout1.cc == 1.0
+
+    #aout1, bout1, cout1 = div_rev(a, 2.0, c)
+    #@test cout1.cv == 1.0
+    #@test cout1.cc == 1.0
+
+    #aout1, bout1, cout1 = div_rev(a, c, 3.0)
+    #@test bout1.cv == 1.0
+    #@test bout1.cc == 1.0
 end
 
 @testset "Reverse Subtraction" begin
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
+    b = Interval(0.5, 12.0)
+    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+
+    aout1, bout1, cout1 = minus_rev(a, b, c)
+    aout1, bout1 = minus_rev(a, c)
+    #@test bout1.cv == 1.0
+    #@test bout1.cc == 1.0
 end
 
 @testset "Reverse Exponential" begin
@@ -186,6 +222,34 @@ end
 end
 
 @testset "Reverse Trignometric" begin
+
+    #msin = sin_rev()
+    #mcos = cos_rev()
+    #mtan = tan_rev()
+    #msec = sec_rev()
+    #mcsc = csc_rev()
+    #mcot = cot_rev()
+
+    #masin = asin_rev()
+    #macos = acos_rev()
+    #matan = atan_rev()
+    #masec = asec_rev()
+    #macsc = acsc_rev()
+    #macot = acot_rev()
+
+    #msind = sind_rev()
+    #mcosd = cosd_rev()
+    #mtand = tand_rev()
+    #msecd = secd_rev()
+    #mcscd = cscd_rev()
+    #mcotd = cotd_rev()
+
+    #masind = asind_rev()
+    #macosd = acosd_rev()
+    #matand = atand_rev()
+    #masecd = asecd_rev()
+    #macscd = acscd_rev()
+    #macotd = acotd_rev()
 end
 
 @testset "Reverse Hyperbolic" begin
@@ -263,8 +327,90 @@ end
    @test isapprox(x3.Intv.hi, 0.4000000000000001, atol=1E-7)
    @test isapprox(x3.cv_grad[1], 0.0, atol=1E-7)
    @test isapprox(x3.cc_grad[1], 0.0, atol=1E-7)
+
+   #asecha, asechb = asech_rev()
+   #acscha, acschb = acsch_rev()
+   #acotha, acothb = acoth_rev()
+
+   #secha, sechb = sech_rev()
+   #cscha, cschb = csch_rev()
+   #cotha, cothb = coth_rev()
 end
 
+#=
+@testset "Reverse Power" begin
+    aout1, bout1 = power_rev(a, b, -3)
+    aout1, bout1 = power_rev(a, b, -2)
+    aout1, bout1 = power_rev(a, b, -1)
+    aout1, bout1 = power_rev(a, b, 0)
+    aout1, bout1 = power_rev(a, b, 1)
+    aout1, bout1 = power_rev(a, b, 2)
+    aout1, bout1 = power_rev(a, b, 3)
+    aout1, bout1 = power_rev(a, b, 4)
+    aout1, bout1 = power_rev(a, b, 2.5)
+
+    aout1, bout1 = inv_rev(a, b)
+    @test bout1.cv == 1.0
+    @test bout1.cc == 1.0
+
+    aout1, bout1 = sqrt_rev(a, b)
+    @test bout1.cv == 1.0
+    @test bout1.cc == 1.0
+end
+=#
+
+@testset "Reverse Other Operators" begin
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
+    b = MC{1,NS}(Interval(0.2, 12.0))
+
+    aout1, bout1 = deg2rad_rev(a, b)
+    @test isempty(bout1)
+
+    c = MC{1,NS}(Interval{Float64}(0.4,3.0))*0.5*pi/180.0
+    aout1, bout1 = deg2rad_rev(c, a)
+    @test bout1.cv == 1.0
+    @test bout1.cc == 1.0
+    @test bout1.Intv.lo == 0.4
+    @test isapprox(bout1.Intv.hi, 1.5000000000000009, atol=1E-6)
+
+    aout1, bout1 = rad2deg_rev(a, b)
+    @test isempty(bout1)
+
+    c = MC{1,NS}(Interval{Float64}(0.4,3.0))*0.5*180.0/pi
+    aout1, bout1 = rad2deg_rev(c, a)
+    @test bout1.cv == 1.0
+    @test bout1.cc == 1.0
+    @test bout1.Intv.lo == 0.4
+    @test isapprox(bout1.Intv.hi, 1.5000000000000007, atol=1E-6)
+
+    aout1, bout1 = step_rev(a, b)
+    @test b.cv == bout1.cv
+    @test b.cc == bout1.cc
+
+    aout1, bout1 = sign_rev(a, b)
+    @test b.cv == bout1.cv
+    @test b.cc == bout1.cc
+
+    aout1, bout1 = abs_rev(a, b)
+    @test b.cv == bout1.cv
+    @test b.cc == bout1.cc
+
+    aout1, bout1 = zero_rev(a, b)
+    @test isempty(bout1)
+
+    c = MC{1,NS}(Interval(-2.2, 12.0))
+    aout1, bout1 = zero_rev(c, a)
+    @test bout1.cv == a.cv
+    @test bout1.cc == a.cc
+
+    aout1, bout1 = one_rev(a, b)
+    @test b.cv == bout1.cv
+    @test b.cc == bout1.cc
+
+    aout1, bout1 = real_rev(a, b)
+    @test aout1.cv == bout1.cv
+    @test aout1.cc == bout1.cc
+end
 
 # reverse of an empty is an empty (should override NaN)
 @testset "Empty Propagation" begin
@@ -276,7 +422,8 @@ end
                   log10_rev, log1p_rev, sin_rev, cos_rev, tan_rev, asin_rev,
                   acos_rev, atan_rev, sinh_rev, cosh_rev, tanh_rev, asinh_rev,
                   acosh_rev, atanh_rev, abs_rev, sqrt_rev, minus_rev, plus_rev,
-                  zero_rev, real_rev, one_rev)
+                  zero_rev, real_rev, one_rev, step_rev, sign_rev, deg2rad_rev,
+                  rad2deg_rev)
             bout, aout = f(b, a)
             @test isempty(aout)
         end
