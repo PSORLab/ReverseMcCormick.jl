@@ -45,6 +45,55 @@ function atan_rev(y::MC, x::MC)
     y, x
 end
 
+
+"""
+$(FUNCTIONNAME)
+
+Reverse McCormick operator for `sind`.
+"""
+function asind_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    if isempty(a)
+        return a, a
+    end
+    atemp, btemp = asin_rev(a, deg2rad(b))
+    btemp = b ∩ rad2deg(btemp)
+    a = a ∩ atemp
+    b = b ∩ MC{N,T}(bintv)
+    a, b
+end
+
+"""
+$(FUNCTIONNAME)
+
+Reverse McCormick operator for `cosd`.
+"""
+function acosd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    if isempty(a)
+        return a, a
+    end
+    atemp, btemp = acos_rev(a, deg2rad(b))
+    btemp = b ∩ rad2deg(btemp)
+    a = a ∩ atemp
+    b = b ∩ MC{N,T}(bintv)
+    a, b
+end
+
+"""
+$(FUNCTIONNAME)
+
+Reverse McCormick operator for `tand`.
+"""
+function atand_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    if isempty(a)
+        return a, a
+    end
+    atemp, btemp = atan_rev(a, deg2rad(b))
+    btemp = b ∩ rad2deg(btemp)
+    a = a ∩ atemp
+    b = b ∩ MC{N,T}(bintv)
+    a, b
+end
+
 # trivial definitions
 for f in (:asec_rev, :acsc_rev, :acot_rev, :asecd, :acscd, :acotd)
     @eval function ($f)(y::MC, x::MC)
