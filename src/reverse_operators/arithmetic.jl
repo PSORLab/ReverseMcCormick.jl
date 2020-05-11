@@ -1,7 +1,7 @@
 """
 $(FUNCTIONNAME)
 
-Creates reverse McCormick contractor for `a` = `real(b)`
+Creates reverse McCormick contractor for `a` = `real(b)`.
 """
 function real_rev(a::MC, b::MC)
     if isempty(a)
@@ -15,7 +15,7 @@ end
 """
 $(FUNCTIONNAME)
 
-Creates reverse McCormick contractor for `a` = `one(b)`
+Creates reverse McCormick contractor for `a` = `one(b)`.
 """
 function one_rev(a::MC, b::MC)
     if isempty(a)
@@ -29,7 +29,7 @@ end
 """
 $(FUNCTIONNAME)
 
-Creates reverse McCormick contractor for `a` = `zero(b)`
+Creates reverse McCormick contractor for `a` = `zero(b)`.
 """
 function zero_rev(a::MC, b::MC)
     if isempty(a)
@@ -39,6 +39,38 @@ function zero_rev(a::MC, b::MC)
     end
     a, b
 end
+
+const RAD2DEG = Interval{Float64}(pi)/Interval{Float64}(180.0)
+"""
+$(FUNCTIONNAME)
+
+Creates reverse McCormick contractor for `a` = `rad2deg(b)`. That is, it is the reverse
+contractor of `a = (180/pi)*b`
+"""
+function rad2deg_rev(a::MC, b::MC)
+    if isempty(a)
+        return a, a
+    end
+    b = RAD2DEG*a ∩ b
+    a, b
+end
+
+
+const DEG2RAD = Interval{Float64}(180.0)/Interval{Float64}(pi)
+"""
+$(FUNCTIONNAME)
+
+Creates reverse McCormick contractor for `a` = `deg2rad(b)`. That is, it is the reverse
+contractor of `a = (pi/180)*b`
+"""
+function deg2rad_rev(a::MC, b::MC)
+    if isempty(a)
+        return a, a
+    end
+    b = DEG2RAD*a ∩ b
+    a, b
+end
+
 
 """
 $(FUNCTIONNAME)
