@@ -45,11 +45,10 @@ function atan_rev(y::MC, x::MC)
     y, x
 end
 
-
 """
 $(FUNCTIONNAME)
 
-Reverse McCormick operator for `sind`.
+Reverse McCormick operator for `asind`.
 """
 function asind_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     if isempty(a)
@@ -65,7 +64,7 @@ end
 """
 $(FUNCTIONNAME)
 
-Reverse McCormick operator for `cosd`.
+Reverse McCormick operator for `acosd`.
 """
 function acosd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     if isempty(a)
@@ -81,7 +80,7 @@ end
 """
 $(FUNCTIONNAME)
 
-Reverse McCormick operator for `tand`.
+Reverse McCormick operator for `atand`.
 """
 function atand_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     if isempty(a)
@@ -95,11 +94,59 @@ function atand_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
 end
 
 # trivial definitions
-for f in (:asec_rev, :acsc_rev, :acot_rev, :asecd, :acscd, :acotd)
+for f in (:asec_rev, :acsc_rev, :acot_rev)
     @eval function ($f)(y::MC, x::MC)
         if isempty(y)
             return y, y
         end
         y, x
     end
+end
+
+"""
+$(FUNCTIONNAME)
+
+Reverse McCormick operator for `asecd`.
+"""
+function asecd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    if isempty(a)
+        return a, a
+    end
+    atemp, btemp = asec_rev(a, deg2rad(b))
+    btemp = b ∩ rad2deg(btemp)
+    a = a ∩ atemp
+    b = b ∩ MC{N,T}(bintv)
+    a, b
+end
+
+"""
+$(FUNCTIONNAME)
+
+Reverse McCormick operator for `acscd`.
+"""
+function acscd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    if isempty(a)
+        return a, a
+    end
+    atemp, btemp = acsc_rev(a, deg2rad(b))
+    btemp = b ∩ rad2deg(btemp)
+    a = a ∩ atemp
+    b = b ∩ MC{N,T}(bintv)
+    a, b
+end
+
+"""
+$(FUNCTIONNAME)
+
+Reverse McCormick operator for `acotd`.
+"""
+function acotd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    if isempty(a)
+        return a, a
+    end
+    atemp, btemp = acot_rev(a, deg2rad(b))
+    btemp = b ∩ rad2deg(btemp)
+    a = a ∩ atemp
+    b = b ∩ MC{N,T}(bintv)
+    a, b
 end

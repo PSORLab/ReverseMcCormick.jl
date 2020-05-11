@@ -95,11 +95,59 @@ function tand_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
 end
 
 # trivial definitions
-for f in (:sec_rev, :csc_rev, :cot_rev, :secd_rev, :cscd_rev, :cotd_rev)
+for f in (:sec_rev, :csc_rev, :cot_rev)
     @eval function ($f)(y::MC, x::MC)
         if isempty(y)
             return y, y
         end
         y, x
     end
+end
+
+"""
+$(FUNCTIONNAME)
+
+Reverse McCormick operator for `secd`.
+"""
+function secd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    if isempty(a)
+        return a, a
+    end
+    atemp, btemp = sec_rev(a, deg2rad(b))
+    btemp = b ∩ rad2deg(btemp)
+    a = a ∩ atemp
+    b = b ∩ MC{N,T}(bintv)
+    a, b
+end
+
+"""
+$(FUNCTIONNAME)
+
+Reverse McCormick operator for `cscd`.
+"""
+function cscd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    if isempty(a)
+        return a, a
+    end
+    atemp, btemp = csc_rev(a, deg2rad(b))
+    btemp = b ∩ rad2deg(btemp)
+    a = a ∩ atemp
+    b = b ∩ MC{N,T}(bintv)
+    a, b
+end
+
+"""
+$(FUNCTIONNAME)
+
+Reverse McCormick operator for `cscd`.
+"""
+function cotd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
+    if isempty(a)
+        return a, a
+    end
+    atemp, btemp = cot_rev(a, deg2rad(b))
+    btemp = b ∩ rad2deg(btemp)
+    a = a ∩ atemp
+    b = b ∩ MC{N,T}(bintv)
+    a, b
 end
