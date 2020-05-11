@@ -55,10 +55,9 @@ function plus_rev(a::MC, b::MC, c::MC)
     a, b, c
 end
 function plus_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
-    bold = b
-    if c ∈ a - bold
+    if c ∈ a - b
         b = b ∩ (a - c)
-        return a, b, c
+        return a, b, MC{N,T}(c)
     end
     empty(MC{N,T}), empty(MC{N,T}), c
 end
@@ -93,9 +92,16 @@ function minus_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:Numbe
     if isempty(a)
         return a, a, a
     end
-    bold = b
     b = b ∩ (a + c)
-    a, b, c
+    a, b, MC{N,T}(c)
+end
+
+function minus_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    if isempty(a)
+        return a, a, a
+    end
+    c = c ∩ (b - a)
+    a, MC{N,T}(b), c
 end
 
 
@@ -155,7 +161,25 @@ function div_rev(a::MC, b::MC, c::MC)
     end
     a, b, c
 end
-div_rev(a,b,c) = div_rev(promote(a,b,c)...)
+function div_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    if isempty(a)
+        return a, a, a
+    end
+    b = b ∩ (a * c)
+    a, b, c
+end
+function div_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    if isempty(a)
+        return a, a, a
+    end
+    if b ∉ (a * c)
+        return a, a, a
+    end
+    if 0.0 ∉ a
+        c = c ∩ (b / a)
+    end
+    a, b, c
+end
 
 """
 $(FUNCTIONNAME)
@@ -183,7 +207,7 @@ function power_rev(a::MC, b::MC, c::MC)
     if !isempty(b) && !isempty(c)
         0.0 ∉ c && (b = b ∩ (a^(inv(c))))
         if 0.0 ∉ a
-            if (0.0 < b.Intv.lo < Inf)
+            if (0.0 < lo(b) < Inf)
                 blog = log(b)
                 if 0.0 ∉ blog
                     c = c ∩ (log(a) / blog)
@@ -195,7 +219,31 @@ function power_rev(a::MC, b::MC, c::MC)
     end
     a, b, c
 end
-power_rev(a,b,c) = power_rev(promote(a,b,c)...)
+function power_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    if isempty(a)
+        return a, a, a
+    end
+    if !isempty(c)
+        if (0.0 ∉ a) && (b > zero(C))
+            blog = log(b)
+            c = c ∩ (log(a)/blog)
+        end
+    else
+        a = empty(a)
+    end
+    a, MC{N,T}(b), c
+end
+function power_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    if isempty(a)
+        return a, a, a
+    end
+    if !isempty(b) && 0.0 < lo(b) < Inf
+            b = b ∩ exp(-c*log(b))
+    else
+        a = empty(a)
+    end
+    a, b, MC{N,T}(c)
+end
 
 """
 $(FUNCTIONNAME)
