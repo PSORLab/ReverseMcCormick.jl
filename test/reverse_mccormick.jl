@@ -54,6 +54,26 @@ end
     @test isempty(aout1)
     @test isempty(bout1)
     @test isempty(cout1)
+
+    a = MC{1,NS}(2.0, Interval{Float64}(0.4,3.0), 1)
+    b = -1.1
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
+    aout1, bout1, cout1 = max_rev(a, b, c)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+
+    aout1, bout1, cout1 = max_rev(a, c, b)
+    @test bout1.cv == 2.0
+    @test bout1.cc == 2.0
+
+    b = 5.1
+    aout1, bout1, cout1 = min_rev(a, b, c)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+
+    aout1, bout1, cout1 = min_rev(a, c, b)
+    @test bout1.cv == 2.0
+    @test bout1.cc == 2.0
 end
 
 @testset "Reverse Multiplication" begin
@@ -679,6 +699,19 @@ end
     c = empty(MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0)))
     a = 3.0^c
     aout1, bout, cout1 = power_rev(a, 3.0, c)
+    @test isempty(aout1)
+    @test isempty(cout1)
+
+    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    c1 = empty(MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0)))
+    a = 3.0^c
+    aout1, bout, cout1 = power_rev(a, 3.0, c1)
+    @test isempty(aout1)
+    @test isempty(cout1)
+
+    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    c1 = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    aout1, bout, cout1 = power_rev(c, c1, 0)
     @test isempty(aout1)
     @test isempty(cout1)
 end

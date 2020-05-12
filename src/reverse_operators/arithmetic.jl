@@ -241,8 +241,7 @@ function power_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:Numbe
     elseif !iszero(c)
         b = b ∩ a^(1/c)
     elseif iszero(c) && 1.0 ∉ a
-        a = empty(a)
-        return a, a, a
+        return empty(a), empty(a), empty(a)
     end
     a, b, MC{N,T}(c)
 end
