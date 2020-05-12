@@ -16,9 +16,7 @@ Creates reverse McCormick contractor for `a` = `one(b)`.
 """
 function one_rev(a::MC, b::MC)
     isempty(a) && (return a, a)
-    if 1.0 ∉ a
-        b = empty(b)
-    end
+    1.0 ∉ a    && (return a, empty(b))
     a, b
 end
 
@@ -29,9 +27,7 @@ Creates reverse McCormick contractor for `a` = `zero(b)`.
 """
 function zero_rev(a::MC, b::MC)
     isempty(a) && (return a, a)
-    if 0.0 ∉ a
-        b = empty(b)
-    end
+    0.0 ∉ a    && (return a, empty(b))
     a, b
 end
 
@@ -76,11 +72,12 @@ function plus_rev(a::MC, b::MC, c::MC)
     a, b, c
 end
 function plus_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    isempty(a) && (return a, a, a)
     if c ∈ a - b
         b = b ∩ (a - c)
         return a, b, MC{N,T}(c)
     end
-    empty(MC{N,T}), empty(MC{N,T}), empty(MC{N,T})
+    empty(a), empty(a), empty(a)
 end
 function plus_rev(a::MC{N,T}, c::C, b::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
     a, b, c = plus_rev(a, b, c)

@@ -115,9 +115,25 @@ end
     c = 3.0
 
     aout1, bout1, cout1 = plus_rev(a, b, c)
-
     @test bout1.cv == -2.0
-    @test cout1 == 3.0
+    @test cout1.cv == 3.0
+
+    a = MC{1,NS}(45.0, Interval{Float64}(40.0, 50.0), 1)
+    aout1, bout1, cout1 = plus_rev(a, b, c)
+    @test isempty(aout1)
+    @test isempty(bout1)
+    @test isempty(cout1)
+
+    a = empty(MC{1,NS}(45.0, Interval{Float64}(40.0, 50.0), 1))
+    aout1, bout1, cout1 = plus_rev(a, b, c)
+    @test isempty(aout1)
+    @test isempty(bout1)
+    @test isempty(cout1)
+
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
+    aout1, cout1, bout1 = plus_rev(a, c, b)
+    @test bout1.cv == -2.0
+    @test cout1.cv == 3.0
 
     c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
     aout1, bout1 = plus_rev(a, c)                    # should be NaN
@@ -139,22 +155,35 @@ end
     @test out[2].cc == a.cc
 
     a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
-    b = Interval(0.5, 12.0)
+    b = MC{1,NS}(Interval(0.5, 12.0))
     c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
 
-    #aout1, bout1, cout1 = div_rev(a, b, c)
-    #@test bout1.cv == 1.0
-    #@test bout1.cc == 1.0
-    #@test cout1.cv == 1.0
-    #@test cout1.cc == 1.0
+    aout1, bout1, cout1 = div_rev(a, b, c)
+    @test bout1.cv == 1.46
+    @test bout1.cc == 3.5
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
 
-    #aout1, bout1, cout1 = div_rev(a, 2.0, c)
-    #@test cout1.cv == 1.0
-    #@test cout1.cc == 1.0
+    aout1, bout1, cout1 = div_rev(a, 2.0, c)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
 
-    #aout1, bout1, cout1 = div_rev(a, c, 3.0)
-    #@test bout1.cv == 1.0
-    #@test bout1.cc == 1.0
+    a = MC{1,NS}(Interval{Float64}(0.4,3.0))
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
+    aout1, bout1, cout1 = div_rev(a, c, 3.0)
+    @test isapprox(bout1.cv, 1.2000000000000002, atol=1E-6)
+    @test bout1.cc == 4.5
+
+    a = empty(MC{1,NS}(Interval{Float64}(0.4,3.0)))
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
+    aout1, bout1, cout1 = div_rev(a, c, 3.0)
+    @test isempty(bout1)
+
+    a = empty(MC{1,NS}(Interval{Float64}(0.4,3.0)))
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
+    aout1, bout1, cout1 = div_rev(a, 3.0, c)
+    @test isempty(cout1)
+
 end
 
 @testset "Reverse Subtraction" begin
@@ -635,6 +664,11 @@ end
     @test b.cv == bout1.cv
     @test b.cc == bout1.cc
 
+    a = MC{1,NS}(2.6, Interval{Float64}(2.4,3.0), 1)
+    aout1, bout1 = one_rev(a, b)
+    @test isempty(bout1)
+
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
     aout1, bout1 = real_rev(a, b)
     @test aout1.cv == bout1.cv
     @test aout1.cc == bout1.cc
