@@ -532,25 +532,59 @@ end
     @test out[2].cv == a.cv
     @test out[2].cc == a.cc
 
-    #=
-    aout1, bout1 = power_rev(a, b, -3)
-    aout1, bout1 = power_rev(a, b, -2)
-    aout1, bout1 = power_rev(a, b, -1)
-    aout1, bout1 = power_rev(a, b, 0)
-    aout1, bout1 = power_rev(a, b, 1)
-    aout1, bout1 = power_rev(a, b, 2)
-    aout1, bout1 = power_rev(a, b, 3)
-    aout1, bout1 = power_rev(a, b, 4)
-    aout1, bout1 = power_rev(a, b, 2.5)
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^-3
+    aout1, bout1, cout1 = power_rev(a, b, -3)
+    @test bout1.cv == 2.5
+    @test bout1.cc == 2.6
 
-    aout1, bout1 = inv_rev(a, b)
-    @test bout1.cv == 1.0
-    @test bout1.cc == 1.0
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^-2
+    aout1, bout, cout1 = power_rev(a, b, -2)
+    @test bout.cv == 2.5
+    @test bout.cc == 2.6
 
-    aout1, bout1 = sqrt_rev(a, b)
-    @test bout1.cv == 1.0
-    @test bout1.cc == 1.0
-    =#
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^-1
+    aout1, bout, cout1 = power_rev(a, b, -1)
+    @test bout.cv == 2.5
+    @test bout.cc == 2.6
+
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^0
+    aout1, bout, cout1 = power_rev(a, b, 0)
+    @test bout.cv == 2.5
+    @test bout.cc == 2.6
+
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^1
+    aout1, bout, cout1 = power_rev(a, b, 1)
+    @test bout.cv == 2.5
+    @test bout.cc == 2.6
+
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^2
+    aout1, bout, cout11 = power_rev(a, b, 2)
+    @test bout.cv == 2.5
+    @test bout.cc == 2.6
+
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^3
+    aout1, bout, cout1 = power_rev(a, b, 3)
+    @test bout.cv == 2.5
+    @test bout.cc == 2.6
+
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^4
+    aout1, bout, cout1 = power_rev(a, b, 4)
+    @test bout.cv == 2.5
+    @test bout.cc == 2.6
+
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^2.5
+    aout1, bout, cout1 = power_rev(a, b, 2.5)
+    @test bout.cv == 2.5
+    @test bout.cc == 2.6
 end
 
 @testset "Reverse Other Operators" begin
