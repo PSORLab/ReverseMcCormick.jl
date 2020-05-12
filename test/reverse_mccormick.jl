@@ -495,7 +495,10 @@ end
                   acos_rev, atan_rev, sinh_rev, cosh_rev, tanh_rev, asinh_rev,
                   acosh_rev, atanh_rev, abs_rev, sqrt_rev, minus_rev, plus_rev,
                   zero_rev, real_rev, one_rev, step_rev, sign_rev, deg2rad_rev,
-                  rad2deg_rev)
+                  rad2deg_rev, sind_rev, cosd_rev, tand_rev, sec_rev, csc_rev,
+                  cot_rev, secd_rev, cscd_rev, cotd_rev, asind_rev, acosd_rev,
+                  atand_rev, asec_rev, acsc_rev, acot_rev, asecd_rev, acscd_rev,
+                  acot_rev, inv_rev)
             bout, aout = f(b, a)
             @test isempty(aout)
         end
