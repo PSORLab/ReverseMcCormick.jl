@@ -8,7 +8,7 @@ invertible. If `b` dominates `c`, the  `b = b ∩ a`. If `c` dominates `b`,  `c 
 No update otherwise. TODO: See if constructing an reverse from the identity
 `max(x,y) = 0.5*(x + y + abs(x - y))` yields a tigher relaxation in this case.
 """
-function max_rev(a::MC{N,T}, b::MC{N,T}, c::MC{N,T}) where {N, T<:RelaxTag}
+function max_rev(a::MC, b::MC, c::MC)
     isempty(a) && (return a, a, a)
     if hi(b) <= lo(c)
         c = c ∩ a
@@ -26,7 +26,7 @@ invertible. If `b` dominates `c`, the  `b = b ∩ a`. If `c` dominates `b`,  `c 
 No update otherwise.  TODO: See if constructing an reverse from the identity
 `min(x, y) = 0.5*(x + y - abs(x - y))` yields a tigher relaxation in this case.
 """
-function min_rev(a::MC{N,T}, b::MC{N,T}, c::MC{N,T}) where {N, T<:RelaxTag}
+function min_rev(a::MC, b::MC, c::MC)
     isempty(a) && (return a, a, a)
     if hi(b) <= lo(c)
         b = b ∩ a
