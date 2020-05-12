@@ -145,10 +145,20 @@ function mul_rev(a::MC, b::MC, c::MC)
     a, b, c
 end
 function mul_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
-    mul_rev(a, b, MC{N,T}(c))
+    if !iszero(c)
+        b = b ∩ a*inv(c)
+    elseif 0.0 ∉ a
+        return empty(a), empty(a), empty(a)
+    end
+    a, b, MC{N,T}(c)
 end
 function mul_rev(a::MC{N,T}, c::C, b::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
-    mul_rev(a, MC{N,T}(c), b)
+    if !iszero(c)
+        b = b ∩ a*inv(c)
+    elseif 0.0 ∉ a
+        return empty(a), empty(a), empty(a)
+    end
+    a, MC{N,T}(c), b
 end
 
 """
