@@ -10,6 +10,52 @@ function MC_1_is_equal(y, x, tol)
     return (bool1 && bool2 && bool3 && bool4 && bool5 && bool6)
 end
 
+@testset "Reverse Extrema" begin
+    a = MC{1,NS}(2.0, Interval{Float64}(0.4,3.0), 1)
+    b = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
+
+    aout1, bout1, cout1 = max_rev(a, b, c)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+    @test cout1.Intv.lo == 1.1
+    @test cout1.Intv.hi == 3.0
+
+    aout1, cout1, bout1 = max_rev(a, c, b)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+    @test cout1.Intv.lo == 1.1
+    @test cout1.Intv.hi == 3.0
+
+    empt = empty(a)
+    aout1, bout1, cout1 = max_rev(empt, b, c)
+    @test isempty(aout1)
+    @test isempty(bout1)
+    @test isempty(cout1)
+
+    a = MC{1,NS}(2.0, Interval{Float64}(0.4,3.0), 1)
+    b = MC{1,NS}(Interval{Float64}(10.0, 20.0))
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
+
+    aout1, bout1, cout1 = min_rev(a, b, c)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+    @test cout1.Intv.lo == 1.1
+    @test cout1.Intv.hi == 3.0
+
+    aout1, cout1, bout1 = min_rev(a, c, b)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+    @test cout1.Intv.lo == 1.1
+    @test cout1.Intv.hi == 3.0
+
+    empt = empty(a)
+    aout1, bout1, cout1 = min_rev(empt, b, c)
+    @test isempty(aout1)
+    @test isempty(bout1)
+    @test isempty(cout1)
+end
+
 @testset "Reverse Multiplication" begin
 
     # THE BINARY OPERATOR
@@ -68,16 +114,58 @@ end
     b = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
     c = 3.0
 
-    aout1, bout1, cout1 = plus_rev(a,b,c)
+    aout1, bout1, cout1 = plus_rev(a, b, c)
 
     @test bout1.cv == -2.0
     @test cout1 == 3.0
+
+    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+    aout1, bout1 = plus_rev(a, c)                    # should be NaN
+    @test isnan(bout1.cv)
+    @test isnan(bout1.cc)
+
+    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+    b = MC{1,NS}(Interval{Float64}(-10.0, 10.0))
+    aout1, bout1 = plus_rev(c, b)
+    @test bout1.cv == 2.0
+    @test bout1.cc == 2.0
 end
 
 @testset "Reverse Division" begin
+    a = MC{1,NS}(1.14, Interval{Float64}(0.1,1.2), 1)
+    b = inv(a)
+    out = inv_rev(b,a)
+    @test out[2].cv == a.cv
+    @test out[2].cc == a.cc
+
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
+    b = Interval(0.5, 12.0)
+    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+
+    #aout1, bout1, cout1 = div_rev(a, b, c)
+    #@test bout1.cv == 1.0
+    #@test bout1.cc == 1.0
+    #@test cout1.cv == 1.0
+    #@test cout1.cc == 1.0
+
+    #aout1, bout1, cout1 = div_rev(a, 2.0, c)
+    #@test cout1.cv == 1.0
+    #@test cout1.cc == 1.0
+
+    #aout1, bout1, cout1 = div_rev(a, c, 3.0)
+    #@test bout1.cv == 1.0
+    #@test bout1.cc == 1.0
 end
 
 @testset "Reverse Subtraction" begin
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
+    b = Interval(0.5, 12.0)
+    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+
+    aout1, bout1, cout1 = minus_rev(a, b, c)
+    aout1, bout1 = minus_rev(a, c)
+    #@test bout1.cv == 1.0
+    #@test bout1.cc == 1.0
 end
 
 @testset "Reverse Exponential" begin
@@ -186,6 +274,136 @@ end
 end
 
 @testset "Reverse Trignometric" begin
+
+    a = MC{1,NS}(9.5,9.6,Interval{Float64}(8.0,11.0))
+    b = MC{1,NS}(9.5,9.6,Interval{Float64}(9.4,9.8))
+
+    sin1a = sin(b)
+    msin = sin_rev(sin1a, b)
+    @test msin[2].cv == 9.5
+    @test msin[2].cc == 9.6
+
+    cos1a = cos(b)
+    mcos = cos_rev(cos1a, b)
+    @test mcos[2].cv == 9.5
+    @test mcos[2].cc == 9.6
+
+    tan1a = tan(b)
+    mtan = tan_rev(tan1a, b)
+    @test mtan[2].cv == 9.5
+    @test mtan[2].cc == 9.6
+
+
+    b = MC{1,NS}(0.5,0.6,Interval{Float64}(0.4,0.8))
+    sec1a = sec(b)
+    msec = sec_rev(sec1a, b)
+    @test msec[2].cv == 0.5
+    @test msec[2].cc == 0.6
+
+    csc1a = csc(b)
+    mcsc = csc_rev(csc1a, b)
+    @test mcsc[2].cv == 0.5
+    @test mcsc[2].cc == 0.6
+
+    cot1a = cot(b)
+    mcot = cot_rev(cot1a, b)
+    @test mcot[2].cv == 0.5
+    @test mcot[2].cc == 0.6
+
+    asin1a = asin(b)
+    masin = asin_rev(asin1a, b)
+    @test isapprox(masin[2].cv, 0.48692255094800774, atol=1E-6)
+    @test isapprox(masin[2].cc, 0.6205203125624899, atol=1E-6)
+
+    acos1a = acos(b)
+    macos = acos_rev(acos1a, b)
+    @test isapprox(macos[2].cv, 0.5000000000000001, atol=1E-6)
+    @test isapprox(macos[2].cc, 0.5999999999999999, atol=1E-6)
+
+    atan1a = atan(b)
+    matan = atan_rev(atan1a, b)
+    @test matan[2].cv == 0.5
+    @test matan[2].cc == 0.6
+
+    b = MC{1,NS}(1.1,2.2,Interval{Float64}(1.1,2.2))
+    asec1a = asec(b)
+    masec = asec_rev(asec1a, b)
+    @test masec[2].cv == 1.1
+    @test masec[2].cc == 2.2
+
+    acsc1a = acsc(b)
+    macsc = acsc_rev(acsc1a, b)
+    @test macsc[2].cv == 1.1
+    @test macsc[2].cc == 2.2
+
+    b = MC{1,NS}(0.5,0.6,Interval{Float64}(0.4,0.8))
+    acot1a = acot(b)
+    macot = acot_rev(acot1a, b)
+    @test macot[2].cv == 0.5
+    @test macot[2].cc == 0.6
+
+    sind1a = sind(b)
+    msind = sind_rev(sind1a, b)
+    @test msind[2].cv == 0.5
+    @test msind[2].cc == 0.6
+
+    cosd1a = cosd(b)
+    mcosd = cosd_rev(cosd1a, b)
+    @test mcosd[2].cv == 0.5
+    @test mcosd[2].cc == 0.6
+
+    tand1a = tand(b)
+    mtand = tand_rev(tand1a, b)
+    @test mtand[2].cv == 0.5
+    @test mtand[2].cc == 0.6
+
+    secd1a = secd(b)
+    msecd = secd_rev(secd1a, b)
+    @test msecd[2].cv == 0.5
+    @test msecd[2].cc == 0.6
+
+    cscd1a = cscd(b)
+    mcscd = cscd_rev(cscd1a, b)
+    @test mcscd[2].cv == 0.5
+    @test mcscd[2].cc == 0.6
+
+    cotd1a = cotd(b)
+    mcotd = cotd_rev(cotd1a, b)
+    @test mcotd[2].cv == 0.5
+    @test mcotd[2].cc == 0.6
+
+    b = MC{1,NS}(Interval{Float64}(0.85, 0.95))
+    b1 = MC{1,NS}(Interval{Float64}(0.1, 0.9))*60.0
+    asind1a = asind(b)
+    masind = asind_rev(asind1a, b1)
+    @test masind[2].cv == Inf
+    @test masind[2].cc == -Inf
+
+    acosd1a = acosd(b)
+    macosd = acosd_rev(acosd1a, b1)
+    @test macosd[2].cv == Inf
+    @test macosd[2].cc == -Inf
+
+    atand1a = atand(b)
+    matand = atand_rev(atand1a, b1)
+    @test matand[2].cv == Inf
+    @test matand[2].cc == -Inf
+
+    asecd1a = asecd(b)
+    masecd = asecd_rev(asecd1a, b1)
+    @test isnan(masecd[2].cv)
+    @test isnan(masecd[2].cc)
+
+    b = MC{1,NS}(Interval{Float64}(1.1,2.2))*60
+    acscd1a = acscd(b)
+    macscd = acscd_rev(acscd1a, b)
+    @test macscd[2].cv == 66.0
+    @test macscd[2].cc == 132.0
+
+    acotd1a = acotd(b)
+    macotd = acotd_rev(acotd1a, b)
+    @test macotd[2].cv == 66.0
+    @test macotd[2].cc == 132.0
 end
 
 @testset "Reverse Hyperbolic" begin
@@ -263,8 +481,130 @@ end
    @test isapprox(x3.Intv.hi, 0.4000000000000001, atol=1E-7)
    @test isapprox(x3.cv_grad[1], 0.0, atol=1E-7)
    @test isapprox(x3.cc_grad[1], 0.0, atol=1E-7)
+
+   asechv = asech(b)
+   asecha, asechb = asech_rev(asechv, a)
+   @test asechb.cv == 0.31
+   @test asechb.cc == 0.34
+
+   acschv = acsch(b)
+   acscha, acschb = acsch_rev(acschv, a)
+   @test acschb.cv == 0.31
+   @test acschb.cc == 0.34
+
+   sechv = sech(b)
+   secha, sechb = sech_rev(sechv, a)
+   @test sechb.cv == 0.31
+   @test sechb.cc == 0.34
+
+   cschv = csch(b)
+   cscha, cschb = csch_rev(cschv, a)
+   @test cschb.cv == 0.31
+   @test cschb.cc == 0.34
+
+   a0 = MC{1,NS}(0.1, 0.2,Interval{Float64}(0.1,0.2))
+   a1 = MC{1,NS}(Interval{Float64}(0.01,2.1))
+   cothv = coth(a0)
+   cotha, cothb = coth_rev(cothv, a1)
+   @test isapprox(cothb.cv, 1.0000000038566186, atol=1E-6)
+   @test isapprox(cothb.cc, 1.0000794969264033, atol=1E-6)
+
+   b1 = MC{1,NS}(2.4,2.6,Interval{Float64}(2.2,2.8))
+   a2 = MC{1,NS}(Interval{Float64}(0.01,3.1))
+   acothv = acoth(b1)
+   acotha, acothb = acoth_rev(acothv, a2)
+   @test isapprox(acothb.cv, 2.362216567294689, atol=1E-6)
+   @test isapprox(acothb.cc, 2.6376185113149493, atol=1E-6)
 end
 
+
+@testset "Reverse Power" begin
+
+    a = MC{1,NS}(1.14, Interval{Float64}(0.1,1.2), 1)
+    b = sqrt(a)
+    out = sqrt_rev(b,a)
+    @test out[2].cv == a.cv
+    @test out[2].cc == a.cc
+
+    a = MC{1,NS}(1.14, Interval{Float64}(0.1,1.2), 1)
+    b = a^2
+    out = sqr_rev(b,a)
+    @test out[2].cv == a.cv
+    @test out[2].cc == a.cc
+
+    #=
+    aout1, bout1 = power_rev(a, b, -3)
+    aout1, bout1 = power_rev(a, b, -2)
+    aout1, bout1 = power_rev(a, b, -1)
+    aout1, bout1 = power_rev(a, b, 0)
+    aout1, bout1 = power_rev(a, b, 1)
+    aout1, bout1 = power_rev(a, b, 2)
+    aout1, bout1 = power_rev(a, b, 3)
+    aout1, bout1 = power_rev(a, b, 4)
+    aout1, bout1 = power_rev(a, b, 2.5)
+
+    aout1, bout1 = inv_rev(a, b)
+    @test bout1.cv == 1.0
+    @test bout1.cc == 1.0
+
+    aout1, bout1 = sqrt_rev(a, b)
+    @test bout1.cv == 1.0
+    @test bout1.cc == 1.0
+    =#
+end
+
+@testset "Reverse Other Operators" begin
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
+    b = MC{1,NS}(Interval(0.2, 12.0))
+
+    aout1, bout1 = deg2rad_rev(a, b)
+    @test isempty(bout1)
+
+    c = MC{1,NS}(Interval{Float64}(0.4,3.0))*0.5*pi/180.0
+    aout1, bout1 = deg2rad_rev(c, a)
+    @test bout1.cv == 1.0
+    @test bout1.cc == 1.0
+    @test bout1.Intv.lo == 0.4
+    @test isapprox(bout1.Intv.hi, 1.5000000000000009, atol=1E-6)
+
+    aout1, bout1 = rad2deg_rev(a, b)
+    @test isempty(bout1)
+
+    c = MC{1,NS}(Interval{Float64}(0.4,3.0))*0.5*180.0/pi
+    aout1, bout1 = rad2deg_rev(c, a)
+    @test bout1.cv == 1.0
+    @test bout1.cc == 1.0
+    @test bout1.Intv.lo == 0.4
+    @test isapprox(bout1.Intv.hi, 1.5000000000000007, atol=1E-6)
+
+    aout1, bout1 = step_rev(a, b)
+    @test b.cv == bout1.cv
+    @test b.cc == bout1.cc
+
+    aout1, bout1 = sign_rev(a, b)
+    @test b.cv == bout1.cv
+    @test b.cc == bout1.cc
+
+    aout1, bout1 = abs_rev(a, b)
+    @test b.cv == bout1.cv
+    @test b.cc == bout1.cc
+
+    aout1, bout1 = zero_rev(a, b)
+    @test isempty(bout1)
+
+    c = MC{1,NS}(Interval(-2.2, 12.0))
+    aout1, bout1 = zero_rev(c, a)
+    @test bout1.cv == a.cv
+    @test bout1.cc == a.cc
+
+    aout1, bout1 = one_rev(a, b)
+    @test b.cv == bout1.cv
+    @test b.cc == bout1.cc
+
+    aout1, bout1 = real_rev(a, b)
+    @test aout1.cv == bout1.cv
+    @test aout1.cc == bout1.cc
+end
 
 # reverse of an empty is an empty (should override NaN)
 @testset "Empty Propagation" begin
@@ -276,7 +616,11 @@ end
                   log10_rev, log1p_rev, sin_rev, cos_rev, tan_rev, asin_rev,
                   acos_rev, atan_rev, sinh_rev, cosh_rev, tanh_rev, asinh_rev,
                   acosh_rev, atanh_rev, abs_rev, sqrt_rev, minus_rev, plus_rev,
-                  zero_rev, real_rev, one_rev)
+                  zero_rev, real_rev, one_rev, step_rev, sign_rev, deg2rad_rev,
+                  rad2deg_rev, sind_rev, cosd_rev, tand_rev, sec_rev, csc_rev,
+                  cot_rev, secd_rev, cscd_rev, cotd_rev, asind_rev, acosd_rev,
+                  atand_rev, asec_rev, acsc_rev, acot_rev, asecd_rev, acscd_rev,
+                  acot_rev, inv_rev)
             bout, aout = f(b, a)
             @test isempty(aout)
         end
