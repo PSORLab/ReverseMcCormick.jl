@@ -94,6 +94,25 @@ end
     @test cout2_a.cc == -1.0
     @test cout2_a.cv_grad[1] == -8.38
     @test cout2_a.cc_grad[1] == 0.0
+
+    # THE BINARY OPERATOR
+    a = MC{1,NS}(Interval{Float64}(0.4,3.0))
+    b = 0.5
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
+
+    aout2, bout2, cout2 = mul_rev(a, b, c)
+    @test cout2.cv == 2.2
+    @test cout2.cc == 6.0
+
+    aout2, bout2, cout2 = mul_rev(a, c, b)
+    @test bout2.cv == 2.2
+    @test bout2.cc == 6.0
+
+    aout2, bout2, cout2 = mul_rev(a, 0.0, c)
+    @test isempty(cout2)
+
+    aout2, bout2, cout2 = mul_rev(a, c, 0.0)
+    @test isempty(bout2)
 end
 
 @testset "Reverse Addition" begin
@@ -196,6 +215,14 @@ end
     @test bout1.cc == 7.5
     @test cout1.cv == 1.1
     @test cout1.cc == 4.5
+
+    aout1, bout1, cout1 = minus_rev(a, b, 3.0)
+    @test bout1.cv == 3.4
+    @test bout1.cc == 6.0
+
+    aout1, bout1, cout1 = minus_rev(a, 3.0, b)
+    @test cout1.cv == 0.5
+    @test cout1.cc == 2.6
 
     aout1, bout1 = minus_rev(-a, c)
     @test bout1.cv == 1.1
@@ -619,6 +646,41 @@ end
     aout1, bout, cout1 = power_rev(a, b, 2.5)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
+
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = b^c
+    aout1, bout, cout1 = power_rev(a, b, c)
+    @test bout.cv == 2.5
+    @test bout.cc == 2.6
+
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = empty(b)
+    aout1, bout, cout1 = power_rev(a, b, c)
+    @test isempty(aout1)
+    @test isempty(bout)
+    @test isempty(cout1)
+
+    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    c = empty(MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0)))
+    a = b^c
+    aout1, bout, cout1 = power_rev(a, b, c)
+    @test isempty(aout1)
+    @test isempty(bout)
+    @test isempty(cout1)
+
+    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    a = 3.0^c
+    aout1, bout, cout1 = power_rev(a, 3.0, c)
+    @test bout.cv == 3.0
+    @test bout.cc == 3.0
+
+    c = empty(MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0)))
+    a = 3.0^c
+    aout1, bout, cout1 = power_rev(a, 3.0, c)
+    @test isempty(aout1)
+    @test isempty(cout1)
 end
 
 @testset "Reverse Other Operators" begin
