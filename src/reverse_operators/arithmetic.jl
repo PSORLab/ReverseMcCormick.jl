@@ -199,18 +199,15 @@ Creates reverse McCormick contractor for `a` = `b`^`c`
 """
 function power_rev(a::MC, b::MC, c::MC)
     isempty(a) && (return a, a, a)
-    if !isempty(b) && !isempty(c)
-        0.0 ∉ c && (b = b ∩ (a^(inv(c))))
-        if 0.0 ∉ a
-            if (0.0 < lo(b) < Inf)
-                blog = log(b)
-                if 0.0 ∉ blog
-                    c = c ∩ (log(a) / blog)
-                end
+    (isempty(b) || isempty(c)) && (return a, a, a)
+    0.0 ∉ c && (b = b ∩ a^inv(c))
+    if 0.0 ∉ a
+        if 0.0 < lo(b) < Inf
+            blog = log(b)
+            if 0.0 ∉ blog
+                c = c ∩ (log(a) / blog)
             end
         end
-    else
-        a = empty(a)
     end
     a, b, c
 end
@@ -219,7 +216,9 @@ function power_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:Numbe
     if !isempty(c)
         if (0.0 ∉ a) && (b > zero(C))
             blog = log(b)
-            c = c ∩ (log(a)/blog)
+            if 0.0 ∉ blog
+                c = c ∩ (log(a)/blog)
+            end
         end
     else
         a = empty(a)
@@ -228,10 +227,15 @@ function power_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:Numbe
 end
 function power_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
     isempty(a) && (return a, a, a)
-    if !isempty(b) && 0.0 < lo(b) < Inf
-        b = b ∩ exp(-c*log(b))
-    else
+    (isempty(b) || 0.0 > lo(b)) && (return a, a, a)
+    if isone(-c)
+        a, b = inv_rev(a,b)
+        return a, b, MC{N,T}(c)
+    elseif !iszero(c)
+        b = b ∩ a^(1/c)
+    elseif iszero(c) && 1.0 ∉ a
         a = empty(a)
+        return a, a, a
     end
     a, b, MC{N,T}(c)
 end
