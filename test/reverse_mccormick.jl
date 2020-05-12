@@ -187,14 +187,19 @@ end
 end
 
 @testset "Reverse Subtraction" begin
-    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
-    b = Interval(0.5, 12.0)
-    c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
+    a = MC{1,NS}(Interval{Float64}(0.4,3.0))
+    b = MC{1,NS}(Interval(0.5, 12.0))
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
 
     aout1, bout1, cout1 = minus_rev(a, b, c)
-    aout1, bout1 = minus_rev(a, c)
-    #@test bout1.cv == 1.0
-    #@test bout1.cc == 1.0
+    @test bout1.cv == 1.5
+    @test bout1.cc == 7.5
+    @test cout1.cv == 1.1
+    @test cout1.cc == 4.5
+
+    aout1, bout1 = minus_rev(-a, c)
+    @test bout1.cv == 1.1
+    @test bout1.cc == 3.0
 end
 
 @testset "Reverse Exponential" begin
@@ -648,6 +653,15 @@ end
     @test b.cv == bout1.cv
     @test b.cc == bout1.cc
 
+    a = MC{1,NS}(0.5, Interval{Float64}(-0.2,0.8), 1)
+    aout1, bout1 = step_rev(a, b)
+    @test isnan(bout1)
+
+    a = MC{1,NS}(0.5, Interval{Float64}(-1.2,0.8), 1)
+    aout1, bout1 = sign_rev(a, b)
+    @test isnan(bout1)
+
+    a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
     aout1, bout1 = abs_rev(a, b)
     @test b.cv == bout1.cv
     @test b.cc == bout1.cc
