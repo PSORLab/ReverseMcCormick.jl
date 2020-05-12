@@ -132,6 +132,12 @@ end
 end
 
 @testset "Reverse Division" begin
+    a = MC{1,NS}(1.14, Interval{Float64}(0.1,1.2), 1)
+    b = inv(a)
+    out = inv_rev(b,a)
+    @test out[2].cv == a.cv
+    @test out[2].cc == a.cc
+
     a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)
     b = Interval(0.5, 12.0)
     c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
@@ -512,8 +518,22 @@ end
    @test isapprox(acothb.cc, 2.6376185113149493, atol=1E-6)
 end
 
-#=
+
 @testset "Reverse Power" begin
+
+    a = MC{1,NS}(1.14, Interval{Float64}(0.1,1.2), 1)
+    b = sqrt(a)
+    out = sqrt_rev(b,a)
+    @test out[2].cv == a.cv
+    @test out[2].cc == a.cc
+
+    a = MC{1,NS}(1.14, Interval{Float64}(0.1,1.2), 1)
+    b = a^2
+    out = sqr_rev(b,a)
+    @test out[2].cv == a.cv
+    @test out[2].cc == a.cc
+
+    #=
     aout1, bout1 = power_rev(a, b, -3)
     aout1, bout1 = power_rev(a, b, -2)
     aout1, bout1 = power_rev(a, b, -1)
@@ -531,8 +551,8 @@ end
     aout1, bout1 = sqrt_rev(a, b)
     @test bout1.cv == 1.0
     @test bout1.cc == 1.0
+    =#
 end
-=#
 
 @testset "Reverse Other Operators" begin
     a = MC{1,NS}(1.0, Interval{Float64}(0.4,3.0), 1)

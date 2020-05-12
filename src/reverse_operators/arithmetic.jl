@@ -232,7 +232,7 @@ end
 function power_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
     isempty(a) && (return a, a, a)
     if !isempty(b) && 0.0 < lo(b) < Inf
-            b = b ∩ exp(-c*log(b))
+        b = b ∩ exp(-c*log(b))
     else
         a = empty(a)
     end
@@ -250,7 +250,7 @@ function sqrt_rev(a::MC, b::MC)
     b = b ∩ a^2
     a, b
 end
-sqr_rev(f, x)  = power_rev(f, x, 2)
+sqr_rev(f, x) = power_rev(f, x, 2)
 
 
 """
