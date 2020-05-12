@@ -376,18 +376,18 @@ end
     b1 = MC{1,NS}(Interval{Float64}(0.1, 0.9))*60.0
     asind1a = asind(b)
     masind = asind_rev(asind1a, b1)
-    @test isnan(masind[2].cv)
-    @test isnan(masind[2].cc)
+    @test masind[2].cv == Inf
+    @test masind[2].cc == -Inf
 
     acosd1a = acosd(b)
     macosd = acosd_rev(acosd1a, b1)
-    @test isnan(macosd[2].cv)
-    @test isnan(macosd[2].cc)
+    @test macosd[2].cv == Inf
+    @test macosd[2].cc == -Inf
 
     atand1a = atand(b)
     matand = atand_rev(atand1a, b1)
-    @test isnan(matand[2].cv)
-    @test isnan(matand[2].cc)
+    @test matand[2].cv == Inf
+    @test matand[2].cc == -Inf
 
     asecd1a = asecd(b)
     masecd = asecd_rev(asecd1a, b1)
@@ -397,13 +397,13 @@ end
     b = MC{1,NS}(Interval{Float64}(1.1,2.2))*60
     acscd1a = acscd(b)
     macscd = acscd_rev(acscd1a, b)
-    @test macscd[2].cv == 75.07944084740294
+    @test macscd[2].cv == 66.0
     @test macscd[2].cc == 132.0
 
     acotd1a = acotd(b)
     macotd = acotd_rev(acotd1a, b)
     @test macotd[2].cv == 66.0
-    @test macotd[2].cc == 123.60674538392928
+    @test macotd[2].cc == 132.0
 end
 
 @testset "Reverse Hyperbolic" begin
