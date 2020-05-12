@@ -374,13 +374,39 @@ end
    @test isapprox(x3.cv_grad[1], 0.0, atol=1E-7)
    @test isapprox(x3.cc_grad[1], 0.0, atol=1E-7)
 
-   #asecha, asechb = asech_rev()
-   #acscha, acschb = acsch_rev()
-   #acotha, acothb = acoth_rev()
+   asechv = asech(b)
+   asecha, asechb = asech_rev(asechv, a)
+   @test asechb.cv == 0.31
+   @test asechb.cc == 0.34
 
-   #secha, sechb = sech_rev()
-   #cscha, cschb = csch_rev()
-   #cotha, cothb = coth_rev()
+   acschv = acsch(b)
+   acscha, acschb = acsch_rev(acschv, a)
+   @test acschb.cv == 0.31
+   @test acschb.cc == 0.34
+
+   sechv = sech(b)
+   secha, sechb = sech_rev(sechv, a)
+   @test sechb.cv == 0.31
+   @test sechb.cc == 0.34
+
+   cschv = csch(b)
+   cscha, cschb = csch_rev(cschv, a)
+   @test cschb.cv == 0.31
+   @test cschb.cc == 0.34
+
+   a0 = MC{1,NS}(0.1, 0.2,Interval{Float64}(0.1,0.2))
+   a1 = MC{1,NS}(Interval{Float64}(0.01,2.1))
+   cothv = coth(a0)
+   cotha, cothb = coth_rev(cothv, a1)
+   @test isapprox(cothb.cv, 1.0000000038566186, atol=1E-6)
+   @test isapprox(cothb.cc, 1.0000794969264033, atol=1E-6)
+
+   b1 = MC{1,NS}(2.4,2.6,Interval{Float64}(2.2,2.8))
+   a2 = MC{1,NS}(Interval{Float64}(0.01,3.1))
+   acothv = acoth(b1)
+   acotha, acothb = acoth_rev(acothv, a2)
+   @test isapprox(acothb.cv, 2.362216567294689, atol=1E-6)
+   @test isapprox(acothb.cc, 2.6376185113149493, atol=1E-6)
 end
 
 #=
