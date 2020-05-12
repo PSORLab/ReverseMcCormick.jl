@@ -10,6 +10,52 @@ function MC_1_is_equal(y, x, tol)
     return (bool1 && bool2 && bool3 && bool4 && bool5 && bool6)
 end
 
+@testset "Reverse Extrema" begin
+    a = MC{1,NS}(2.0, Interval{Float64}(0.4,3.0), 1)
+    b = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
+
+    aout1, bout1, cout1 = max_rev(a, b, c)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+    @test cout1.Intv.lo == 1.1
+    @test cout1.Intv.hi == 3.0
+
+    aout1, cout1, bout1 = max_rev(a, c, b)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+    @test cout1.Intv.lo == 1.1
+    @test cout1.Intv.hi == 3.0
+
+    empt = empty(a)
+    aout1, bout1, cout1 = max_rev(empt, b, c)
+    @test isempty(aout1)
+    @test isempty(bout1)
+    @test isempty(cout1)
+
+    a = MC{1,NS}(2.0, Interval{Float64}(0.4,3.0), 1)
+    b = MC{1,NS}(Interval{Float64}(10.0, 20.0))
+    c = MC{1,NS}(Interval{Float64}(1.1,4.5))
+
+    aout1, bout1, cout1 = min_rev(a, b, c)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+    @test cout1.Intv.lo == 1.1
+    @test cout1.Intv.hi == 3.0
+
+    aout1, cout1, bout1 = min_rev(a, c, b)
+    @test cout1.cv == 2.0
+    @test cout1.cc == 2.0
+    @test cout1.Intv.lo == 1.1
+    @test cout1.Intv.hi == 3.0
+
+    empt = empty(a)
+    aout1, bout1, cout1 = min_rev(empt, b, c)
+    @test isempty(aout1)
+    @test isempty(bout1)
+    @test isempty(cout1)
+end
+
 @testset "Reverse Multiplication" begin
 
     # THE BINARY OPERATOR
