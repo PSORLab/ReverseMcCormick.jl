@@ -269,33 +269,136 @@ end
 
 @testset "Reverse Trignometric" begin
 
-    #msin = sin_rev()
-    #mcos = cos_rev()
-    #mtan = tan_rev()
-    #msec = sec_rev()
-    #mcsc = csc_rev()
-    #mcot = cot_rev()
+    a = MC{1,NS}(9.5,9.6,Interval{Float64}(8.0,11.0))
+    b = MC{1,NS}(9.5,9.6,Interval{Float64}(9.4,9.8))
 
-    #masin = asin_rev()
-    #macos = acos_rev()
-    #matan = atan_rev()
-    #masec = asec_rev()
-    #macsc = acsc_rev()
-    #macot = acot_rev()
+    sin1a = sin(b)
+    msin = sin_rev(sin1a, b)
+    @test msin[2].cv == 9.5
+    @test msin[2].cc == 9.6
 
-    #msind = sind_rev()
-    #mcosd = cosd_rev()
-    #mtand = tand_rev()
-    #msecd = secd_rev()
-    #mcscd = cscd_rev()
-    #mcotd = cotd_rev()
+    cos1a = cos(b)
+    mcos = cos_rev(cos1a, b)
+    @test mcos[2].cv == 9.5
+    @test mcos[2].cc == 9.6
 
-    #masind = asind_rev()
-    #macosd = acosd_rev()
-    #matand = atand_rev()
-    #masecd = asecd_rev()
-    #macscd = acscd_rev()
-    #macotd = acotd_rev()
+    tan1a = tan(b)
+    mtan = tan_rev(tan1a, b)
+    @test mtan[2].cv == 9.5
+    @test mtan[2].cc == 9.6
+
+
+    b = MC{1,NS}(0.5,0.6,Interval{Float64}(0.4,0.8))
+    sec1a = sec(b)
+    msec = sec_rev(sec1a, b)
+    @test msec[2].cv == 0.5
+    @test msec[2].cc == 0.6
+
+    csc1a = csc(b)
+    mcsc = csc_rev(csc1a, b)
+    @test mcsc[2].cv == 0.5
+    @test mcsc[2].cc == 0.6
+
+    cot1a = cot(b)
+    mcot = cot_rev(cot1a, b)
+    @test mcot[2].cv == 0.5
+    @test mcot[2].cc == 0.6
+
+    asin1a = asin(b)
+    masin = asin_rev(asin1a, b)
+    @test isapprox(masin[2].cv, 0.48692255094800774, atol=1E-6)
+    @test isapprox(masin[2].cc, 0.6205203125624899, atol=1E-6)
+
+    acos1a = acos(b)
+    macos = acos_rev(acos1a, b)
+    @test isapprox(macos[2].cv, 0.5000000000000001, atol=1E-6)
+    @test isapprox(macos[2].cc, 0.5999999999999999, atol=1E-6)
+
+    atan1a = atan(b)
+    matan = atan_rev(atan1a, b)
+    @test matan[2].cv == 0.5
+    @test matan[2].cc == 0.6
+
+    b = MC{1,NS}(1.1,2.2,Interval{Float64}(1.1,2.2))
+    asec1a = asec(b)
+    masec = asec_rev(asec1a, b)
+    @test masec[2].cv == 1.1
+    @test masec[2].cc == 2.2
+
+    acsc1a = acsc(b)
+    macsc = acsc_rev(acsc1a, b)
+    @test macsc[2].cv == 1.1
+    @test macsc[2].cc == 2.2
+
+    b = MC{1,NS}(0.5,0.6,Interval{Float64}(0.4,0.8))
+    acot1a = acot(b)
+    macot = acot_rev(acot1a, b)
+    @test macot[2].cv == 0.5
+    @test macot[2].cc == 0.6
+
+    sind1a = sind(b)
+    msind = sind_rev(sind1a, b)
+    @test msind[2].cv == 0.5
+    @test msind[2].cc == 0.6
+
+    cosd1a = cosd(b)
+    mcosd = cosd_rev(cosd1a, b)
+    @test mcosd[2].cv == 0.5
+    @test mcosd[2].cc == 0.6
+
+    tand1a = tand(b)
+    mtand = tand_rev(tand1a, b)
+    @test mtand[2].cv == 0.5
+    @test mtand[2].cc == 0.6
+
+    secd1a = secd(b)
+    msecd = secd_rev(secd1a, b)
+    @test msecd[2].cv == 0.5
+    @test msecd[2].cc == 0.6
+
+    cscd1a = cscd(b)
+    mcscd = cscd_rev(cscd1a, b)
+    @test mcscd[2].cv == 0.5
+    @test mcscd[2].cc == 0.6
+
+    cotd1a = cotd(b)
+    mcotd = cotd_rev(cotd1a, b)
+    @test mcotd[2].cv == 0.5
+    @test mcotd[2].cc == 0.6
+
+    #=
+    b = MC{1,NS}(Interval{Float64}(1.1,1.101))*10.0
+    asind1a = asind(b)
+    masind = asind_rev(asind1a, b)
+    @test masind[2].cv == 1
+    @test masind[2].cc == 1
+
+    acosd1a = acosd(b)
+    macosd = acosd_rev(acosd1a, b)
+    @test macosd[2].cv == 1
+    @test macosd[2].cc == 1
+
+    atand1a = atand(b)
+    matand = atand_rev(atand1a, b)
+    @test matand[2].cv == 1
+    @test matand[2].cc == 1
+
+    asecd1a = asecd(b)
+    masecd = asecd_rev(asecd1a, b)
+    @test masecd[2].cv == 1
+    @test masecd[2].cc == 1
+    =#
+
+    b = MC{1,NS}(Interval{Float64}(1.1,2.2))*60
+    acscd1a = acscd(b)
+    macscd = acscd_rev(acscd1a, b)
+    @test macscd[2].cv == 75.07944084740294
+    @test macscd[2].cc == 132.0
+
+    acotd1a = acotd(b)
+    macotd = acotd_rev(acotd1a, b)
+    @test macotd[2].cv == 66.0
+    @test macotd[2].cc == 123.60674538392928
 end
 
 @testset "Reverse Hyperbolic" begin
