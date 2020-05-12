@@ -174,9 +174,7 @@ function div_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberN
 end
 function div_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
     isempty(a) && (return a, a, a)
-    if b ∉ (a * c)
-        return a, a, a
-    end
+    b ∉ (a * c) && (return a, a, a)
     if 0.0 ∉ a
         c = c ∩ (b / a)
     end
@@ -193,7 +191,6 @@ function inv_rev(a::MC, b::MC)
     0.0 ∉ a && (b = b ∩ inv(a))
     a, b
 end
-inv_rev(a,b) = inv_rev(promote(a,b)...)
 
 """
 $(FUNCTIONNAME)

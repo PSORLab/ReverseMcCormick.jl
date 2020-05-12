@@ -372,28 +372,27 @@ end
     @test mcotd[2].cv == 0.5
     @test mcotd[2].cc == 0.6
 
-    #=
-    b = MC{1,NS}(Interval{Float64}(1.1,1.101))*10.0
+    b = MC{1,NS}(Interval{Float64}(0.85, 0.95))
+    b1 = MC{1,NS}(Interval{Float64}(0.1, 0.9))*60.0
     asind1a = asind(b)
-    masind = asind_rev(asind1a, b)
-    @test masind[2].cv == 1
-    @test masind[2].cc == 1
+    masind = asind_rev(asind1a, b1)
+    @test isnan(masind[2].cv)
+    @test isnan(masind[2].cc)
 
     acosd1a = acosd(b)
-    macosd = acosd_rev(acosd1a, b)
-    @test macosd[2].cv == 1
-    @test macosd[2].cc == 1
+    macosd = acosd_rev(acosd1a, b1)
+    @test isnan(macosd[2].cv)
+    @test isnan(macosd[2].cc)
 
     atand1a = atand(b)
-    matand = atand_rev(atand1a, b)
-    @test matand[2].cv == 1
-    @test matand[2].cc == 1
+    matand = atand_rev(atand1a, b1)
+    @test isnan(matand[2].cv)
+    @test isnan(matand[2].cc)
 
     asecd1a = asecd(b)
-    masecd = asecd_rev(asecd1a, b)
-    @test masecd[2].cv == 1
-    @test masecd[2].cc == 1
-    =#
+    masecd = asecd_rev(asecd1a, b1)
+    @test isnan(masecd[2].cv)
+    @test isnan(masecd[2].cc)
 
     b = MC{1,NS}(Interval{Float64}(1.1,2.2))*60
     acscd1a = acscd(b)

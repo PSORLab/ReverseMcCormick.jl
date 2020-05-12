@@ -43,10 +43,7 @@ Reverse McCormick operator for `asind`.
 """
 function asind_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     isempty(a) && (return a, a)
-    atemp, btemp = asin_rev(a, deg2rad(b))
-    btemp = b ∩ rad2deg(btemp)
-    a = a ∩ atemp
-    b = b ∩ MC{N,T}(btemp)
+    b = b ∩ sin(deg2rad(a))
     a, b
 end
 
@@ -57,10 +54,7 @@ Reverse McCormick operator for `acosd`.
 """
 function acosd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     isempty(a) && (return a, a)
-    atemp, btemp = acos_rev(a, deg2rad(b))
-    btemp = b ∩ rad2deg(btemp)
-    a = a ∩ atemp
-    b = b ∩ MC{N,T}(btemp)
+    b = b ∩ cos(deg2rad(a))
     a, b
 end
 
@@ -71,10 +65,8 @@ Reverse McCormick operator for `atand`.
 """
 function atand_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     isempty(a) && (return a, a)
-    atemp, btemp = atan_rev(a, deg2rad(b))
-    btemp = b ∩ rad2deg(btemp)
-    a = a ∩ atemp
-    b = b ∩ MC{N,T}(btemp)
+    atemp, btemp = atan_rev(a, b)
+    b = b ∩ tan(deg2rad(a))
     a, b
 end
 
@@ -119,10 +111,7 @@ Reverse McCormick operator for `asecd`.
 """
 function asecd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     isempty(a) && (return a, a)
-    atemp, btemp = asec_rev(a, deg2rad(b))
-    btemp = b ∩ rad2deg(btemp)
-    a = a ∩ atemp
-    b = b ∩ MC{N,T}(btemp)
+    b = b ∩ sec(deg2rad(a))
     a, b
 end
 
@@ -133,10 +122,7 @@ Reverse McCormick operator for `acscd`.
 """
 function acscd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     isempty(a) && (return a, a)
-    atemp, btemp = acsc_rev(a, deg2rad(b))
-    btemp = b ∩ rad2deg(btemp)
-    a = a ∩ atemp
-    b = b ∩ MC{N,T}(btemp)
+    b = b ∩ csc(deg2rad(a))
     a, b
 end
 
@@ -147,9 +133,6 @@ Reverse McCormick operator for `acotd`.
 """
 function acotd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     isempty(a) && (return a, a)
-    atemp, btemp = acot_rev(a, deg2rad(b))
-    btemp = b ∩ rad2deg(btemp)
-    a = a ∩ atemp
-    b = b ∩ MC{N,T}(btemp)
+    b = b ∩ cot(deg2rad(a))
     a, b
 end
