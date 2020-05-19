@@ -1,7 +1,7 @@
 name = "ReverseMcCormick"
 uuid = "f9d89e60-3bef-4186-aa8f-bdf0d7614dd6"
 authors = ["Matthew Wilhelm <matthew.wilhelm@uconn.edu>"]
-version = "0.5.2"
+version = "0.5.3"
 
 [deps]
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
