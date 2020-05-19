@@ -298,8 +298,8 @@ end
 
 @testset "Reverse Logarithm" begin
 
-   a = MC{1,NS}(9.5,9.6,Interval{Float64}(8.0,11.0))
-   b = MC{1,NS}(9.5,9.6,Interval{Float64}(9.4,9.8))
+   a = MC{2,NS}(9.5,9.6,Interval{Float64}(8.0,11.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+   b = MC{2,NS}(9.5,9.6,Interval{Float64}(9.4,9.8), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
    log1a = log(b)
    y1,x1 = log_rev(log1a,a)
 
@@ -307,18 +307,18 @@ end
    @test isapprox(9.6, x1.cc, atol=1E-5)
    @test isapprox(9.399999999999997, x1.Intv.lo, atol=1E-4)
    @test isapprox(9.800000000000002, x1.Intv.hi, atol=1E-4)
-   @test isapprox(0.0, x1.cv_grad[1], atol=1E-4)
-   @test isapprox(0.0, x1.cc_grad[1], atol=1E-4)
+   @test isapprox(1.0, x1.cv_grad[1], atol=1E-4)
+   @test isapprox(1.0, x1.cc_grad[1], atol=1E-4)
 
    @test isapprox(2.2511278633761, y1.cv, atol=1E-5)
    @test isapprox(2.2617630, y1.cc, atol=1E-5)
    @test isapprox(2.240709689275958, y1.Intv.lo, atol=1E-4)
    @test isapprox(2.2823823856765264, y1.Intv.hi, atol=1E-4)
-   @test isapprox(0.0, y1.cv_grad[1], atol=1E-4)
-   @test isapprox(0.0, y1.cc_grad[1], atol=1E-4)
+   @test isapprox( 0.1041817410014211, y1.cv_grad[1], atol=1E-4)
+   @test isapprox(0.10416666666666667, y1.cc_grad[1], atol=1E-4)
 
-   a = MC{1,NS}(9.5,9.6,Interval{Float64}(8.0,11.0))
-   b = MC{1,NS}(9.5,9.6,Interval{Float64}(9.4,9.8))
+   a = MC{2,NS}(9.5,9.6,Interval{Float64}(8.0,11.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+   b = MC{2,NS}(9.5,9.6,Interval{Float64}(9.4,9.8), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
    log2a = log2(b)
    y2,x2 = log2_rev(log2a,a)
 
@@ -326,11 +326,11 @@ end
    @test isapprox(3.2630344, y2.cc, atol=1E-5)
    @test isapprox(3.232660756790275, y2.Intv.lo, atol=1E-4)
    @test isapprox(3.292781749227846, y2.Intv.hi, atol=1E-4)
-   @test isapprox(0.0, y2.cv_grad[1], atol=1E-4)
-   @test isapprox(0.0, y2.cc_grad[1], atol=1E-4)
+   @test isapprox(0.15030248109392783, y2.cv_grad[1], atol=1E-4)
+   @test isapprox(0.1502807334259337, y2.cc_grad[1], atol=1E-4)
 
-   a = MC{1,NS}(9.5,9.6,Interval{Float64}(8.0,11.0))
-   b = MC{1,NS}(9.5,9.6,Interval{Float64}(9.4,9.8))
+   a = MC{2,NS}(9.5,9.6,Interval{Float64}(8.0,11.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+   b = MC{2,NS}(9.5,9.6,Interval{Float64}(9.4,9.8), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
    log10a = log10(b)
    y3,x3 = log10_rev(log10a,a)
 
@@ -338,11 +338,11 @@ end
    @test isapprox(0.9822712, y3.cc, atol=1E-5)
    @test isapprox(0.9731278535996987, y3.Intv.lo, atol=1E-4)
    @test isapprox(0.991226075692495, y3.Intv.hi, atol=1E-4)
-   @test isapprox(0.0, y3.cv_grad[1], atol=1E-4)
-   @test isapprox(0.0, y3.cc_grad[1], atol=1E-4)
+   @test isapprox(0.04524555523199077, y3.cv_grad[1], atol=1E-4)
+   @test isapprox(0.04523900853158873, y3.cc_grad[1], atol=1E-4)
 
-   a = MC{1,NS}(9.5,9.6,Interval{Float64}(8.0,11.0))
-   b = MC{1,NS}(9.5,9.6,Interval{Float64}(9.4,9.8))
+   a = MC{2,NS}(9.5,9.6,Interval{Float64}(8.0,11.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+   b = MC{2,NS}(9.5,9.6,Interval{Float64}(9.4,9.8), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
    log1pa = log1p(b)
    y4,x4 = log1p_rev(log1pa,a)
 
@@ -350,14 +350,14 @@ end
    @test isapprox(2.3608540, y4.cc, atol=1E-5)
    @test isapprox(2.3418058061473266, y4.Intv.lo, atol=1E-4)
    @test isapprox(2.3795461341301745, y4.Intv.hi, atol=1E-4)
-   @test isapprox(0.0, y4.cv_grad[1], atol=1E-4)
-   @test isapprox(0.0, y4.cc_grad[1], atol=1E-4)
+   @test isapprox(0.09435081995711961, y4.cv_grad[1], atol=1E-4)
+   @test isapprox(0.09433962264150944, y4.cc_grad[1], atol=1E-4)
 end
 
 @testset "Reverse Trignometric" begin
 
-    a = MC{1,NS}(9.5,9.6,Interval{Float64}(8.0,11.0))
-    b = MC{1,NS}(9.5,9.6,Interval{Float64}(9.4,9.8))
+    a = MC{2,NS}(9.5,9.6,Interval{Float64}(8.0,11.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+    b = MC{2,NS}(9.5,9.6,Interval{Float64}(9.4,9.8), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
 
     sin1a = sin(b)
     msin = sin_rev(sin1a, b)
@@ -375,7 +375,7 @@ end
     @test mtan[2].cc == 9.6
 
 
-    b = MC{1,NS}(0.5,0.6,Interval{Float64}(0.4,0.8))
+    b = MC{2,NS}(0.5,0.6,Interval{Float64}(0.4,0.8), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     sec1a = sec(b)
     msec = sec_rev(sec1a, b)
     @test msec[2].cv == 0.5
@@ -406,7 +406,7 @@ end
     @test matan[2].cv == 0.5
     @test matan[2].cc == 0.6
 
-    b = MC{1,NS}(1.1,2.2,Interval{Float64}(1.1,2.2))
+    b = MC{2,NS}(1.1,2.2,Interval{Float64}(1.1,2.2), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     asec1a = asec(b)
     masec = asec_rev(asec1a, b)
     @test masec[2].cv == 1.1
@@ -417,7 +417,7 @@ end
     @test macsc[2].cv == 1.1
     @test macsc[2].cc == 2.2
 
-    b = MC{1,NS}(0.5,0.6,Interval{Float64}(0.4,0.8))
+    b = MC{2,NS}(0.5,0.6,Interval{Float64}(0.4,0.8), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     acot1a = acot(b)
     macot = acot_rev(acot1a, b)
     @test macot[2].cv == 0.5
@@ -489,16 +489,16 @@ end
 
 @testset "Reverse Hyperbolic" begin
 
-   a = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
-   b = MC{1,NS}(2.4,2.6,Interval{Float64}(2.2,2.8))
+   a = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+   b = MC{2,NS}(2.4,2.6,Interval{Float64}(2.2,2.8), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
    sinh1 = sinh(b)
    y1,x1 = sinh_rev(sinh1,a)
    @test isapprox(y1.cv, 5.466229213676094, atol=1E-7)
    @test isapprox(y1.cc, 6.946980626335908, atol=1E-7)
    @test isapprox(y1.Intv.lo, 4.457105170535894, atol=1E-7)
    @test isapprox(y1.Intv.hi, 8.191918354235915, atol=1E-7)
-   @test isapprox(y1.cv_grad[1], 0.0, atol=1E-7)
-   @test isapprox(y1.cc_grad[1], 0.0, atol=1E-7)
+   @test isapprox(y1.cv_grad[1], 5.556947166965507, atol=1E-7)
+   @test isapprox(y1.cc_grad[1], 6.224688639500037, atol=1E-7)
 
    coshb = cosh(b)
    y2,x2 = cosh_rev(coshb,a)
@@ -506,8 +506,8 @@ end
    @test isapprox(y2.cc, 7.024455054206832, atol=1E-7)
    @test isapprox(y2.Intv.lo, 4.567908328898228, atol=1E-7)
    @test isapprox(y2.Intv.hi, 8.252728416861133, atol=1E-7)
-   @test isapprox(y2.cv_grad[1], 0.0, atol=1E-7)
-   @test isapprox(y2.cc_grad[1], 0.0, atol=1E-7)
+   @test isapprox(y2.cv_grad[1], 5.466229213676094, atol=1E-7)
+   @test isapprox(y2.cc_grad[1], 6.141366813271513, atol=1E-7)
 
    tanh1 = tanh(b)
    y3,x3 = tanh_rev(tanh1,a)
@@ -515,16 +515,16 @@ end
    @test isapprox(y3.cc, 0.9890274022010992, atol=1E-7)
    @test isapprox(y3.Intv.lo, 0.9757431300314515, atol=1E-7)
    @test isapprox(y3.Intv.hi, 0.9926315202011281, atol=1E-7)
-   @test isapprox(y3.cv_grad[1], 0.0, atol=1E-7)
-   @test isapprox(y3.cc_grad[1], 0.0, atol=1E-7)
+   @test isapprox(y3.cv_grad[1], 0.0281473169494608, atol=1E-7)
+   @test isapprox(y3.cc_grad[1], 0.021824797695345177, atol=1E-7)
 
    @test isapprox(x1.cv, 2.5, atol=1E-7)
    @test isapprox(x1.cc, 2.6, atol=1E-7)
    @test isapprox(x1.Intv.lo, 2.19999, atol=1E-5)
    @test isapprox(x1.Intv.hi, 2.80001, atol=1E-5)
 
-   a = MC{1,NS}(2.5,2.6,Interval{Float64}(1.3,4.5))
-   b = MC{1,NS}(2.4,2.6,Interval{Float64}(2.3,3.4))
+   a = MC{2,NS}(2.5,2.6,Interval{Float64}(1.3,4.5), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+   b = MC{2,NS}(2.4,2.6,Interval{Float64}(2.3,3.4), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
 
    asinhb = asinh(b)
    y1,x1 = asinh_rev(asinhb,a)
@@ -532,8 +532,8 @@ end
    @test isapprox(y1.cc, 1.6837431439977444, atol=1E-7)
    @test isapprox(y1.Intv.lo, 1.570278543484978, atol=1E-7)
    @test isapprox(y1.Intv.hi, 1.9378792776645006, atol=1E-7)
-   @test isapprox(y1.cv_grad[1], 0.0, atol=1E-7)
-   @test isapprox(y1.cc_grad[1], 0.0, atol=1E-7)
+   @test isapprox(y1.cv_grad[1], 0.3341824856177478, atol=1E-7)
+   @test isapprox(y1.cc_grad[1], 0.358979079308869, atol=1E-7)
 
    acoshb = acosh(b)
    y2,x2 = acosh_rev(acoshb,a)
@@ -541,11 +541,11 @@ end
    @test isapprox(y2.cc, 1.6094379124341003, atol=1E-7)
    @test isapprox(y2.Intv.lo, 1.47504478124142, atol=1E-7)
    @test isapprox(y2.Intv.hi, 1.894559012672298, atol=1E-7)
-   @test isapprox(y2.cv_grad[1], 0.0, atol=1E-7)
-   @test isapprox(y2.cc_grad[1], 0.0, atol=1E-7)
+   @test isapprox(y2.cv_grad[1], 0.3813765740280664, atol=1E-7)
+   @test isapprox(y2.cc_grad[1], 0.45834924851410563, atol=1E-7)
 
-   a = MC{1,NS}(0.31,0.34,Interval{Float64}(-0.2,0.5))
-   b = MC{1,NS}(0.31,0.34,Interval{Float64}(0.3,0.4))
+   a = MC{2,NS}(0.31,0.34,Interval{Float64}(-0.2,0.5), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+   b = MC{2,NS}(0.31,0.34,Interval{Float64}(0.3,0.4), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
 
    atanhb = atanh(b)
    y3,x3 = atanh_rev(atanhb,a)
@@ -553,15 +553,15 @@ end
    @test isapprox(y3.cc, 0.35517133459930783, atol=1E-7)
    @test isapprox(y3.Intv.lo, 0.3095196042031117, atol=1E-7)
    @test isapprox(y3.Intv.hi, 0.42364893019360184, atol=1E-7)
-   @test isapprox(y3.cv_grad[1], 0.0, atol=1E-7)
-   @test isapprox(y3.cc_grad[1], 0.0, atol=1E-7)
+   @test isapprox(y3.cv_grad[1], 1.1063170704723972, atol=1E-7)
+   @test isapprox(y3.cc_grad[1], 1.1412932599049004, atol=1E-7)
 
    @test isapprox(x3.cv, 0.31, atol=1E-7)
    @test isapprox(x3.cc, 0.34, atol=1E-7)
    @test isapprox(x3.Intv.lo, 0.29999999999999993, atol=1E-7)
    @test isapprox(x3.Intv.hi, 0.4000000000000001, atol=1E-7)
-   @test isapprox(x3.cv_grad[1], 0.0, atol=1E-7)
-   @test isapprox(x3.cc_grad[1], 0.0, atol=1E-7)
+   @test isapprox(x3.cv_grad[1], 1.0, atol=1E-7)
+   @test isapprox(x3.cc_grad[1], 1.0, atol=1E-7)
 
    asechv = asech(b)
    asecha, asechb = asech_rev(asechv, a)
@@ -583,15 +583,15 @@ end
    @test cschb.cv == 0.31
    @test cschb.cc == 0.34
 
-   a0 = MC{1,NS}(0.1, 0.2,Interval{Float64}(0.1,0.2))
-   a1 = MC{1,NS}(Interval{Float64}(0.01,2.1))
+   a0 = MC{2,NS}(0.1, 0.2, Interval{Float64}(0.1,0.2), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+   a1 = MC{2,NS}(Interval{Float64}(0.01,2.1))
    cothv = coth(a0)
    cotha, cothb = coth_rev(cothv, a1)
    @test isapprox(cothb.cv, 1.0000000038566186, atol=1E-6)
    @test isapprox(cothb.cc, 1.0000794969264033, atol=1E-6)
 
-   b1 = MC{1,NS}(2.4,2.6,Interval{Float64}(2.2,2.8))
-   a2 = MC{1,NS}(Interval{Float64}(0.01,3.1))
+   b1 = MC{2,NS}(2.4,2.6,Interval{Float64}(2.2,2.8), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+   a2 = MC{2,NS}(Interval{Float64}(0.01,3.1))
    acothv = acoth(b1)
    acotha, acothb = acoth_rev(acothv, a2)
    @test isapprox(acothb.cv, 2.362216567294689, atol=1E-6)
@@ -613,104 +613,104 @@ end
     @test out[2].cv == a.cv
     @test out[2].cc == a.cc
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^-3
     aout1, bout1, cout1 = power_rev(a, b, -3)
     @test bout1.cv == 2.5
     @test bout1.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^-2
     aout1, bout, cout1 = power_rev(a, b, -2)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^-1
     aout1, bout, cout1 = power_rev(a, b, -1)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^0
     aout1, bout, cout1 = power_rev(a, b, 0)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^1
     aout1, bout, cout1 = power_rev(a, b, 1)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^2
     aout1, bout, cout11 = power_rev(a, b, 2)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^3
     aout1, bout, cout1 = power_rev(a, b, 3)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^4
     aout1, bout, cout1 = power_rev(a, b, 4)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^2.5
     aout1, bout, cout1 = power_rev(a, b, 2.5)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
-    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+    c = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = b^c
     aout1, bout, cout1 = power_rev(a, b, c)
     @test bout.cv == 2.5
     @test bout.cc == 2.6
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
-    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+    c = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = empty(b)
     aout1, bout, cout1 = power_rev(a, b, c)
     @test isempty(aout1)
     @test isempty(bout)
     @test isempty(cout1)
 
-    b = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
-    c = empty(MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0)))
+    b = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+    c = empty(MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false))
     a = b^c
     aout1, bout, cout1 = power_rev(a, b, c)
     @test isempty(aout1)
     @test isempty(bout)
     @test isempty(cout1)
 
-    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    c = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     a = 3.0^c
     aout1, bout, cout1 = power_rev(a, 3.0, c)
     @test bout.cv == 3.0
     @test bout.cc == 3.0
 
-    c = empty(MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0)))
+    c = empty(MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false))
     a = 3.0^c
     aout1, bout, cout1 = power_rev(a, 3.0, c)
     @test isempty(aout1)
     @test isempty(cout1)
 
-    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
-    c1 = empty(MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0)))
+    c = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+    c1 = empty(MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false))
     a = 3.0^c
     aout1, bout, cout1 = power_rev(a, 3.0, c1)
     @test isempty(aout1)
     @test isempty(cout1)
 
-    c = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
-    c1 = MC{1,NS}(2.5,2.6,Interval{Float64}(2.0,3.0))
+    c = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
+    c1 = MC{2,NS}(2.5,2.6,Interval{Float64}(2.0,3.0), seed_gradient(1,Val(2)), seed_gradient(1,Val(2)), false)
     aout1, bout, cout1 = power_rev(c, c1, 0)
     @test isempty(aout1)
     @test isempty(cout1)
