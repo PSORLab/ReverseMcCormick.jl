@@ -1,7 +1,7 @@
 const HALF_PI = Interval{Float64}(pi)/2
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `asin`.
 """
@@ -13,7 +13,7 @@ function asin_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `acos`.
 """
@@ -25,7 +25,7 @@ function acos_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `atan`.
 """
@@ -37,7 +37,7 @@ function atan_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `asind`.
 """
@@ -48,7 +48,7 @@ function asind_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `acosd`.
 """
@@ -59,7 +59,7 @@ function acosd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `atand`.
 """
@@ -71,7 +71,7 @@ function atand_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `asec`.
 """
@@ -82,7 +82,7 @@ function asec_rev(a::MC, b::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `acsc`.
 """
@@ -93,7 +93,7 @@ function acsc_rev(a::MC, b::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `acot`.
 """
@@ -105,7 +105,7 @@ function acot_rev(a::MC, b::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `asecd`.
 """
@@ -116,7 +116,7 @@ function asecd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `acscd`.
 """
@@ -127,7 +127,7 @@ function acscd_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `acotd`.
 """

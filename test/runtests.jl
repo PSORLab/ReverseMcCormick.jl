@@ -1,7 +1,4 @@
 #!/usr/bin/env julia
-
-using Test
-
 using Test, ReverseMcCormick, McCormick
 
 # Create functions for comparing MC object to reference object and detail failures

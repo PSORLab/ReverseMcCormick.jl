@@ -1,5 +1,5 @@
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `exp`.
 """
@@ -11,7 +11,7 @@ function exp_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `exp2`.
 """
@@ -23,7 +23,7 @@ function exp2_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `exp10`.
 """
@@ -35,7 +35,7 @@ function exp10_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `expm1`.
 """
@@ -47,7 +47,7 @@ function expm1_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `log`.
 """
@@ -58,7 +58,7 @@ function log_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `log2`.
 """
@@ -69,7 +69,7 @@ function log2_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `log10`.
 """
@@ -80,7 +80,7 @@ function log10_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `log1p`.
 """

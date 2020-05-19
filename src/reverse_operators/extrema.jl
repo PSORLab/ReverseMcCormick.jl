@@ -1,7 +1,7 @@
 # Currently no refinement on min/max... will add later
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `max(::MC, ::MC)`. Note that this function is not
 invertible. If `b` dominates `c`, the  `b = b ∩ a`. If `c` dominates `b`,  `c = c ∩ a`.
@@ -35,7 +35,7 @@ function max_rev(a::MC{N,T}, c::C, b::MC{N,T}) where {N, T<:RelaxTag, C<:NumberN
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `min`. Note that this function is not
 invertible. If `b` dominates `c`, the  `b = b ∩ a`. If `c` dominates `b`,  `c = c ∩ a`.
