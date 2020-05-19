@@ -5,7 +5,7 @@ Reverse McCormick operator for `sin`.
 """
 function sin_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     isempty(a) && (return a, a)
-    aintv, bintv = IntervalContractors.sin_rev(a.Intv, b.Intv)
+    aintv, bintv = sin_rev(a.Intv, b.Intv)
     a = a ∩ MC{N,T}(aintv)
     b = b ∩ MC{N,T}(bintv)
     a, b
@@ -18,7 +18,7 @@ Reverse McCormick operator for `cos`.
 """
 function cos_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     isempty(a) && (return a, a)
-    aintv, bintv = IntervalContractors.cos_rev(a.Intv, b.Intv)
+    aintv, bintv = cos_rev(a.Intv, b.Intv)
     a = a ∩ MC{N,T}(aintv)
     b = b ∩ MC{N,T}(bintv)
     a, b
@@ -31,7 +31,7 @@ Reverse McCormick operator for `tan`.
 """
 function tan_rev(a::MC{N,T}, b::MC{N,T}) where {N, T<:RelaxTag}
     isempty(a) && (return a, a)
-    aintv, bintv = IntervalContractors.tan_rev(a.Intv, b.Intv)
+    aintv, bintv = tan_rev(a.Intv, b.Intv)
     a = a ∩ MC{N,T}(aintv)
     b = b ∩ MC{N,T}(bintv)
     a, b
