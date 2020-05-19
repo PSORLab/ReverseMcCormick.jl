@@ -1,5 +1,5 @@
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `real(b)`.
 """
@@ -10,7 +10,7 @@ function real_rev(a::MC, b::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `one(b)`.
 """
@@ -21,7 +21,7 @@ function one_rev(a::MC, b::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `zero(b)`.
 """
@@ -33,7 +33,7 @@ end
 
 const RAD2DEG = Interval{Float64}(pi)/Interval{Float64}(180.0)
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `rad2deg(b)`. That is, it is the reverse
 contractor of `a = (180/pi)*b`
@@ -47,7 +47,7 @@ end
 
 const DEG2RAD = Interval{Float64}(180.0)/Interval{Float64}(pi)
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `deg2rad(b)`. That is, it is the reverse
 contractor of `a = (pi/180)*b`
@@ -60,7 +60,7 @@ end
 
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `b` +`c`
 """
@@ -90,7 +90,7 @@ function plus_rev(a::MC, b::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `b`- `c`
 """
@@ -115,7 +115,7 @@ end
 
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `-b``
 """
@@ -126,7 +126,7 @@ function minus_rev(a::MC, b::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `b`*`c`
 """
@@ -162,7 +162,7 @@ function mul_rev(a::MC{N,T}, c::C, b::MC{N,T}) where {N, T<:RelaxTag, C<:NumberN
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `b`/`c`
 """
@@ -189,7 +189,7 @@ function div_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:NumberN
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `inv(b)`
 """
@@ -200,7 +200,7 @@ function inv_rev(a::MC, b::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `b`^`c`
 """
@@ -247,7 +247,7 @@ function power_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:Numbe
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `sqrt(b)`. That is
 `b = b ∩ a^2`
@@ -261,7 +261,7 @@ sqr_rev(f, x) = power_rev(f, x, 2)
 
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `abs(b)`
 """
@@ -271,7 +271,7 @@ function abs_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `step(b)`
 """
@@ -291,7 +291,7 @@ function step_rev(a::MC, b::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `sign(b)`.
 """

@@ -1,5 +1,5 @@
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `sinh`.
 """
@@ -10,7 +10,7 @@ function sinh_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `cosh`.
 """
@@ -22,7 +22,7 @@ function cosh_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `tanh`.
 """
@@ -34,7 +34,7 @@ function tanh_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `sech`.
 """
@@ -46,7 +46,7 @@ function sech_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `csch`.
 """
@@ -57,7 +57,7 @@ function csch_rev(y::MC, x::MC)
 end
 
 """
-$(FUNCTIONNAME)
+$(SIGNATURES)
 
 Reverse McCormick operator for `coth`.
 """
