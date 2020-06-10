@@ -83,7 +83,7 @@ end
     b = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
     c = MC{1,NS}(2.0, Interval{Float64}(1.1,4.5), 1)
 
-    aout1, bout1, cout1 = mul_rev(a,b,c)
+    aout1, bout1, cout1 = mult_rev(a,b,c)
 
     @test bout1.Intv.lo == Inf
     @test bout1.Intv.hi == -Inf
@@ -94,7 +94,7 @@ end
     cout1 = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
     aout1 = bout1*cout1
 
-    aout1_a, bout1_a, cout1_a = mul_rev(aout1, bout1, cout1)
+    aout1_a, bout1_a, cout1_a = mult_rev(aout1, bout1, cout1)
 
     MC_1_is_equal(aout1_a, aout1, 0.00001)
     MC_1_is_equal(bout1_a, bout1, 0.00001)
@@ -104,7 +104,7 @@ end
     cout2 = MC{1,NS}(Interval{Float64}(-10.0,-1.0))
     aout2 = 0.3*bout1*cout1+1.0
 
-    aout2_a, bout2_a, cout2_a = mul_rev(aout2, bout2, cout2)
+    aout2_a, bout2_a, cout2_a = mult_rev(aout2, bout2, cout2)
 
     MC_1_is_equal(aout2_a, aout2, 0.00001)
     MC_1_is_equal(bout2_a, bout2, 0.00001)
@@ -120,18 +120,18 @@ end
     b = 0.5
     c = MC{1,NS}(Interval{Float64}(1.1,4.5))
 
-    aout2, bout2, cout2 = mul_rev(a, b, c)
+    aout2, bout2, cout2 = mult_rev(a, b, c)
     @test cout2.cv == 2.2
     @test cout2.cc == 6.0
 
-    aout2, bout2, cout2 = mul_rev(a, c, b)
+    aout2, bout2, cout2 = mult_rev(a, c, b)
     @test bout2.cv == 2.2
     @test bout2.cc == 6.0
 
-    aout2, bout2, cout2 = mul_rev(a, 0.0, c)
+    aout2, bout2, cout2 = mult_rev(a, 0.0, c)
     @test isempty(cout2)
 
-    aout2, bout2, cout2 = mul_rev(a, c, 0.0)
+    aout2, bout2, cout2 = mult_rev(a, c, 0.0)
     @test isempty(bout2)
 end
 
@@ -801,7 +801,7 @@ end
             bout, aout = f(b, a)
             @test isempty(aout)
         end
-        for f in (plus_rev, minus_rev, mul_rev, div_rev)
+        for f in (plus_rev, minus_rev, mult_rev, div_rev)
             bout, cout, aout = f(b, c, a)
             ~isempty(aout) && (println("f = $(f)"))
             ~isempty(cout) && (println("f = $(f)"))

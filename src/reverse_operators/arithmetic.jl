@@ -66,10 +66,9 @@ Creates reverse McCormick contractor for `a` = `b` +`c`
 """
 function plus_rev(a::MC, b::MC, c::MC)
     isempty(a) && (return a, a, a)
-    bold = b
-    b = b ∩ (a - c)
-    c = c ∩ (a - bold)
-    a, b, c
+    b_new = b ∩ (a - c)
+    c_new = c ∩ (a - b)
+    a, b_new, c_new
 end
 function plus_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
     isempty(a) && (return a, a, a)
@@ -96,21 +95,20 @@ Creates reverse McCormick contractor for `a` = `b`- `c`
 """
 function minus_rev(a::MC, b::MC, c::MC)
     isempty(a) && (return a, a, a)
-    bold = b
-    b = b ∩ (a + c)
-    c = c ∩ (bold - a)
-    a, b, c
+    b_new = b ∩ (a + c)
+    c_new = c ∩ (b - a)
+    a, b_new, c_new
 end
 function minus_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
     isempty(a) && (return a, a, a)
-    b = b ∩ (a + c)
-    a, b, MC{N,T}(c)
+    b_new = b ∩ (a + c)
+    a, b_new, MC{N,T}(c)
 end
 
 function minus_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
     isempty(a) && (return a, a, a)
-    c = c ∩ (b - a)
-    a, MC{N,T}(b), c
+    c_new = c ∩ (b - a)
+    a, MC{N,T}(b), c_new
 end
 
 
@@ -121,8 +119,8 @@ Creates reverse McCormick contractor for `a` = `-b``
 """
 function minus_rev(a::MC, b::MC)
     isempty(a) && (return a, a)
-    b = b ∩ -a
-    return a, b
+    b_new = b ∩ (-a)
+    return a, b_new
 end
 
 """
@@ -130,31 +128,28 @@ $(SIGNATURES)
 
 Creates reverse McCormick contractor for `a` = `b`*`c`
 """
-function mul_rev(a::MC, b::MC, c::MC)
+function mult_rev(a::MC, b::MC, c::MC)
     isempty(a) && (return a, a, a)
-    bflag = 0.0 ∉ b
-    if bflag
-        temp1 = a / b
-        ((0.0 ∉ a) || bflag) && (c = c ∩ temp1)
-    end
-    cflag = 0.0 ∉ c
-    if cflag
-        temp2 = a / c
-        ((0.0 ∉ a) || cflag) && (b = b ∩ temp2)
-    end
-    a, b, c
+    c_new = (0.0 ∉ b) ? (c ∩ (a/b)) : c
+    b_new = (0.0 ∉ c) ? (b ∩ (a/c)) : b
+    a, b_new, c_new
 end
-function mul_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
+function mult_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    #println("ran me 1, a = $a, b = $b, c = $c")
+    #println("a*inv(c) = $(a*inv(c))")
+    isempty(a) && (return a, a, a)
     if !iszero(c)
-        b = b ∩ a*inv(c)
+        #println("b ∩ a*inv(c) = $(b ∩ a*inv(c))")
+        b = b ∩ (a*inv(c))
     elseif 0.0 ∉ a
         return empty(a), empty(a), empty(a)
     end
     a, b, MC{N,T}(c)
 end
-function mul_rev(a::MC{N,T}, c::C, b::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
+function mult_rev(a::MC{N,T}, c::C, b::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    #println("ran me 2")
     if !iszero(c)
-        b = b ∩ a*inv(c)
+        b = b ∩ (a*inv(c))
     elseif 0.0 ∉ a
         return empty(a), empty(a), empty(a)
     end
@@ -239,7 +234,7 @@ function power_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:Numbe
         a, b = inv_rev(a,b)
         return a, b, MC{N,T}(c)
     elseif !iszero(c)
-        b = b ∩ a^(1/c)
+        b = b ∩ a^(one(C)/c)
     elseif iszero(c) && 1.0 ∉ a
         return empty(a), empty(a), empty(a)
     end
@@ -254,7 +249,7 @@ Creates reverse McCormick contractor for `a` = `sqrt(b)`. That is
 """
 function sqrt_rev(a::MC, b::MC)
     isempty(a) && (return a, a)
-    b = b ∩ a^2
+    b = b ∩ (a^2)
     a, b
 end
 sqr_rev(f, x) = power_rev(f, x, 2)
