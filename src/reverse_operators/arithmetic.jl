@@ -227,6 +227,32 @@ function power_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:Numbe
     end
     a, MC{N,T}(b), c
 end
+
+function int_power_rev(a::MC{N,T}, b::MC{N,T}, n::Int, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
+    if n == 2
+        root = sqrt(a)
+        if lo(b) > 0.0
+            b = b ∩ root
+        else
+            b = b ∩ -root
+        end
+    elseif iseven(n)
+        root = a^(1/n)
+        if lo(b) > 0.0
+            b = b ∩ root
+        else
+            b = b ∩ -root
+        end
+    elseif isodd(n)
+        if lo(b) > 0.0
+            b = b ∩ (a ∩ Interval(0, Inf))^(1/n)
+        else
+            b = b ∩ -(((-a) ∩ Interval(0, Inf))^(1/n))
+        end
+    end
+    a, b, MC{N,T}(c)
+end
+
 function power_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
     isempty(a) && (return a, a, a)
     (isempty(b) || 0.0 > lo(b)) && (return a, a, a)
@@ -234,7 +260,11 @@ function power_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:Numbe
         a, b = inv_rev(a,b)
         return a, b, MC{N,T}(c)
     elseif !iszero(c)
-        b = b ∩ a^(one(C)/c)
+        if isinteger(c)
+            return int_power_rev(a, b, Int(c), c)
+        elseif lo(b) > 0.0
+            b = b ∩ a^(one(C)/c)
+        end
     elseif iszero(c) && 1.0 ∉ a
         return empty(a), empty(a), empty(a)
     end

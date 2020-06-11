@@ -121,12 +121,12 @@ end
     c = MC{1,NS}(Interval{Float64}(1.1,4.5))
 
     aout2, bout2, cout2 = mult_rev(a, b, c)
-    @test cout2.cv == 2.2
-    @test cout2.cc == 6.0
+    @test cout2.cv == 1.1
+    @test cout2.cc == 4.5
 
     aout2, bout2, cout2 = mult_rev(a, c, b)
-    @test bout2.cv == 2.2
-    @test bout2.cc == 6.0
+    @test bout2.cv == 1.1
+    @test bout2.cc == 4.5
 
     aout2, bout2, cout2 = mult_rev(a, 0.0, c)
     @test isempty(cout2)
