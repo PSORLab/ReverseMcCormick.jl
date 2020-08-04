@@ -1,3 +1,18 @@
+# Copyright (c) 2018: Matthew Wilhelm & Matthew Stuber.
+# This work is licensed under the Creative Commons Attribution-NonCommercial-
+# ShareAlike 4.0 International License. To view a copy of this license, visit
+# http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative
+# Commons, PO Box 1866, Mountain View, CA 94042, USA.
+#############################################################################
+# McCormick.jl
+# A McCormick operator library in Julia
+# See https://github.com/PSORLab/ReverseMcCormick.jl
+#############################################################################
+# src/reverse_operators/arithmetic.jl
+# Contains definitions of reverse +, -, /, *, promotions, conversion, one,
+# zero.
+#############################################################################
+
 """
 $(SIGNATURES)
 
@@ -46,6 +61,7 @@ end
 
 
 const DEG2RAD = Interval{Float64}(180.0)/Interval{Float64}(pi)
+
 """
 $(SIGNATURES)
 
@@ -134,20 +150,18 @@ function mult_rev(a::MC, b::MC, c::MC)
     b_new = (0.0 ∉ c) ? (b ∩ (a/c)) : b
     a, b_new, c_new
 end
+
 function mult_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
-    #println("ran me 1, a = $a, b = $b, c = $c")
-    #println("a*inv(c) = $(a*inv(c))")
     isempty(a) && (return a, a, a)
     if !iszero(c)
-        #println("b ∩ a*inv(c) = $(b ∩ a*inv(c))")
         b = b ∩ (a*inv(c))
     elseif 0.0 ∉ a
         return empty(a), empty(a), empty(a)
     end
     a, b, MC{N,T}(c)
 end
+
 function mult_rev(a::MC{N,T}, c::C, b::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
-    #println("ran me 2")
     if !iszero(c)
         b = b ∩ (a*inv(c))
     elseif 0.0 ∉ a
@@ -169,11 +183,13 @@ function div_rev(a::MC, b::MC, c::MC)
     end
     a, b, c
 end
+
 function div_rev(a::MC{N,T}, b::MC{N,T}, c::C) where {N, T<:RelaxTag, C<:NumberNotRelax}
     isempty(a) && (return a, a, a)
     b = b ∩ (a * c)
     a, b, c
 end
+
 function div_rev(a::MC{N,T}, b::C, c::MC{N,T}) where {N, T<:RelaxTag, C<:NumberNotRelax}
     isempty(a) && (return a, a, a)
     b ∉ (a * c) && (return a, a, a)
@@ -284,7 +300,6 @@ function sqrt_rev(a::MC, b::MC)
 end
 sqr_rev(f, x) = power_rev(f, x, 2)
 
-
 """
 $(SIGNATURES)
 
@@ -323,8 +338,7 @@ Creates reverse McCormick contractor for `a` = `sign(b)`.
 function sign_rev(a::MC, b::MC)
     a_lo = a.Intv.lo
     a_hi = a.Intv.hi
-    if isempty(a) || -1.0 > a_hi || 1.0 < a_lo ||
-        (-1.0 < a_lo && a_hi < 1.0)
+    if isempty(a) || -1.0 > a_hi || 1.0 < a_lo || (-1.0 < a_lo && a_hi < 1.0)
         b = empty(b)
         return a, b
     elseif -1.0 ∈ a && 1.0 ∉ a
