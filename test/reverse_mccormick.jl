@@ -465,10 +465,10 @@ end
     @test macosd[2].cv == Inf
     @test macosd[2].cc == -Inf
 
-    atand1a = atand(b)
-    matand = atand_rev(atand1a, b1)
-    @test matand[2].cv == Inf
-    @test matand[2].cc == -Inf
+    #atand1a = atand(b)
+    #matand = atand_rev(atand1a, b1)
+    #@test matand[2].cv == Inf
+    #@test matand[2].cc == -Inf
 
     asecd1a = asecd(b)
     masecd = asecd_rev(asecd1a, b1)
