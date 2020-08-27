@@ -1,12 +1,9 @@
 language: julia
-coveralls: true
-
-sudo: required
 
 os:
-  - windows
   - linux
-  #- osx
+  - osx
+  - windows
 
 julia:
   - 1.2
@@ -25,3 +22,6 @@ notifications:
 addons:
   apt_packages:
     - gfortran
+    
+after_success:
+  - julia -e 'import Pkg; Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder());  Codecov.submit(process_folder())'
