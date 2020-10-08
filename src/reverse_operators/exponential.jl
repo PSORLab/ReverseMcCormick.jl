@@ -1,3 +1,18 @@
+# Copyright (c) 2018: Matthew Wilhelm & Matthew Stuber.
+# This work is licensed under the Creative Commons Attribution-NonCommercial-
+# ShareAlike 4.0 International License. To view a copy of this license, visit
+# http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative
+# Commons, PO Box 1866, Mountain View, CA 94042, USA.
+#############################################################################
+# McCormick.jl
+# A McCormick operator library in Julia
+# See https://github.com/PSORLab/ReverseMcCormick.jl
+#############################################################################
+# src/reverse_operators/exponential.jl
+# Contains definitions of reverse McCormick operators of exp, exp2, exp10, expm1
+# log, log2, log10, log1p
+#############################################################################
+
 """
 $(SIGNATURES)
 

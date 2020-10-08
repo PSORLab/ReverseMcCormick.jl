@@ -4,8 +4,8 @@
 # http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative
 # Commons, PO Box 1866, Mountain View, CA 94042, USA.
 #############################################################################
-# McCormick.jl
-# A McCormick operator library in Julia
+# ReverseMcCormick.jl
+# A Reverse McCormick operator library in Julia
 # See https://github.com/PSORLab/ReverseMcCormick.jl
 #############################################################################
 # src/reverse_operators/arithmetic.jl
