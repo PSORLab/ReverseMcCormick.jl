@@ -1,3 +1,11 @@
+# Copyright (c) 2018: Matthew Wilhelm & Matthew Stuber.
+# This code is licensed under MIT license (see LICENSE.md for full details)
+#############################################################################
+# ReverseMcCormick.jl
+# A Reverse McCormick operator library in Julia
+# See https://github.com/PSORLab/ReverseMcCormick.jl
+#############################################################################
+
 __precompile__()
 
 module ReverseMcCormick
